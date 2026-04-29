@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato - Pippo Designs 3D</title>
+    <meta name="description" content="Fale com a Pippo Designs 3D pelo WhatsApp para orçamento de impressão 3D personalizada, presentes, brindes e projetos sob medida.">
+    <link rel="canonical" href="contato.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Contato - Pippo Designs 3D">
+    <meta property="og:description" content="Envie sua ideia, arquivo ou referência para orçamento de impressão 3D.">
+    <meta property="og:image" content="src/img/pippo-designs-3d-logo.png">
+    <meta property="og:site_name" content="Pippo Designs 3D">
+    <meta property="og:locale" content="pt_BR">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="src/estilo-global.css">
+    <link rel="stylesheet" href="src/estilo-contato.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700;800;900&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="src/img/pippo-designs-3d-favicon.png">
+    <script src="src/scripts.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="logo" href="index.html" aria-label="Pippo Designs 3D">
+            <img src="src/img/pippo-designs-3d-logo.png" alt="Logo da Pippo Designs 3D">
+        </a>
+        <p>Orçamento de impressão 3D personalizada</p>
+    </header>
+
+    <nav>
+        <button class="menu-icon" type="button" aria-label="Abrir menu" aria-expanded="false">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <ul class="menu">
+            <li><a href="index.html"><i class="fa-solid fa-house"></i> Início</a></li>
+            <li><a href="loja.html"><i class="fa-solid fa-cart-shopping"></i> Loja</a></li>
+            <li><a href="produtos.html"><i class="fa-solid fa-cubes"></i> Catálogo</a></li>
+            <li><a href="sobre.html"><i class="fa-solid fa-circle-info"></i> Sobre</a></li>
+            <li><a class="active" href="contato.html"><i class="fa-solid fa-message"></i> Contato</a></li>
+        </ul>
+    </nav>
+
+    <main class="contact-page">
+        <section class="contact-intro">
+            <span class="eyebrow">Fale com a gente</span>
+            <h1>Tem uma ideia para imprimir?</h1>
+            <p>Conte o que você precisa, indique medidas, cores, prazo e quantidade. O formulário abre uma conversa no WhatsApp com a mensagem pronta.</p>
+        </section>
+
+        <section class="contact-layout">
+            <div class="contact-cards">
+                <article>
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <h2>WhatsApp</h2>
+                    <p>+55 11 98755-0497</p>
+                    <a class="text-link" href="https://wa.me/5511987550497" target="_blank" rel="noreferrer">Abrir conversa</a>
+                </article>
+                <article>
+                    <i class="fa-solid fa-envelope"></i>
+                    <h2>E-mail</h2>
+                    <p>pippodesigns@icloud.com</p>
+                    <a class="text-link" href="mailto:pippodesigns@icloud.com">Enviar e-mail</a>
+                </article>
+                <article>
+                    <i class="fa-brands fa-instagram"></i>
+                    <h2>Instagram</h2>
+                    <p>@pippodesigns3d</p>
+                    <a class="text-link" href="https://www.instagram.com/pippodesigns3d/" target="_blank" rel="noreferrer">Ver perfil</a>
+                </article>
+            </div>
+
+            <form class="contact-form" data-contact-form>
+                <label for="contactName">Nome</label>
+                <input type="text" id="contactName" name="contactName" placeholder="Seu nome" required>
+
+                <label for="contactPhone">Telefone</label>
+                <input type="tel" id="contactPhone" name="contactPhone" placeholder="(11) 99999-9999">
+
+                <label for="contactProject">Tipo de projeto</label>
+                <select id="contactProject" name="contactProject">
+                    <option>Produto da loja</option>
+                    <option>Presente personalizado</option>
+                    <option>Lembrancinhas</option>
+                    <option>Peça utilitária sob medida</option>
+                    <option>Protótipo ou arquivo 3D</option>
+                </select>
+
+                <label for="contactMessage">Mensagem</label>
+                <textarea id="contactMessage" name="contactMessage" rows="6" placeholder="Descreva tamanho, cor, quantidade, nome a personalizar e prazo desejado." required></textarea>
+
+                <button class="btn primary" type="submit"><i class="fa-brands fa-whatsapp"></i> Enviar pelo WhatsApp</button>
+            </form>
+        </section>
+    </main>
+
+    <a class="whatsapp-float" href="https://wa.me/5511987550497?text=Ol%C3%A1%2C%20Pippo%20Designs%203D!%20Quero%20fazer%20um%20or%C3%A7amento." target="_blank" rel="noreferrer" aria-label="Falar com a Pippo Designs 3D no WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span>Orçamento</span>
+    </a>
+
+    <footer>
+        <p>&copy; 2026 Pippo Designs 3D. Todos os direitos reservados.</p>
+        <p><i class="fa-solid fa-phone"></i> +55 11 98755-0497 | <i class="fa-solid fa-envelope"></i> pippodesigns@icloud.com</p>
+        <div class="redes-sociais">
+            <a href="https://www.instagram.com/pippodesigns3d/" target="_blank" rel="noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://web.facebook.com/pippoarg/?_rdc=1&_rdr#" target="_blank" rel="noreferrer" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://wa.me/5511987550497" target="_blank" rel="noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 260" role="img" aria-labelledby="title desc">
+    <title id="title">Pippo Designs 3D</title>
+    <desc id="desc">Logotipo da Pippo Designs 3D com icone de impressao 3D</desc>
+    <defs>
+        <linearGradient id="filament" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#e94b8b"/>
+            <stop offset="0.52" stop-color="#236a73"/>
+            <stop offset="1" stop-color="#f2b84b"/>
+        </linearGradient>
+        <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#173f48" flood-opacity="0.16"/>
+        </filter>
+    </defs>
+    <rect width="780" height="260" fill="none"/>
+    <g filter="url(#softShadow)">
+        <path d="M72 62h130c18 0 32 14 32 32v78c0 18-14 32-32 32H72c-18 0-32-14-32-32V94c0-18 14-32 32-32Z" fill="#ffffff"/>
+        <path d="M78 86h118c9 0 16 7 16 16v50H62v-50c0-9 7-16 16-16Z" fill="#e9f4f2" stroke="#173f48" stroke-width="8"/>
+        <path d="M92 114h90" stroke="#8ca2a5" stroke-width="10" stroke-linecap="round"/>
+        <path d="M125 101h36v34h-36z" fill="#e94b8b" rx="7"/>
+        <path d="M139 135l-10 28h28l-10-28z" fill="#173f48"/>
+        <path d="M91 176h92" stroke="#173f48" stroke-width="12" stroke-linecap="round"/>
+        <path d="M104 165h66c0-22-15-40-33-40s-33 18-33 40Z" fill="url(#filament)"/>
+        <path d="M74 198h126" stroke="#173f48" stroke-width="10" stroke-linecap="round"/>
+    </g>
+    <g>
+        <text x="272" y="114" fill="#173f48" font-family="Raleway, Montserrat, Arial, sans-serif" font-size="76" font-weight="900">Pippo</text>
+        <text x="272" y="184" fill="#173f48" font-family="Raleway, Montserrat, Arial, sans-serif" font-size="68" font-weight="900">Designs</text>
+        <g transform="translate(592 118)">
+            <path d="M22 0h92c12 0 22 10 22 22v54c0 12-10 22-22 22H22C10 98 0 88 0 76V22C0 10 10 0 22 0Z" fill="url(#filament)"/>
+            <text x="68" y="69" fill="#ffffff" text-anchor="middle" font-family="Raleway, Montserrat, Arial, sans-serif" font-size="54" font-weight="900">3D</text>
+        </g>
+    </g>
+    <path d="M289 210c84 26 201 26 283 0" fill="none" stroke="#f2b84b" stroke-width="8" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,99 @@
+/* styles/produtos.css */
+main {
+    padding: 20px;
+}
+
+h2 {
+    color: #FF4081;
+}
+
+.produtos {
+    background-color: #FFFDE7;
+    padding: 20px;
+}
+
+.categoria {
+    margin-bottom: 40px;
+}
+
+.categoria h3 {
+    color: #3F51B5;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* styles/produtos.css */
+main {
+    padding: 20px;
+}
+
+h2 {
+    color: #FF4081;
+}
+
+.produtos {
+    background-color: #FFFDE7;
+    padding: 20px;
+}
+
+.categoria {
+    margin-bottom: 40px;
+}
+
+.categoria h3 {
+    color: #3F51B5;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.produto-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+    margin: 10px;
+    background-color: #FFFFFF;
+    display: inline-block;
+    width: calc(33.333% - 40px); /* Ajuste a largura conforme necessário */
+    margin: 10px;
+}
+
+.produto-card img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 10%; /* Torna a imagem redonda */
+    border: 5px solid #ddd; /* Adiciona uma moldura à imagem */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona uma leve sombra para um efeito 3D */
+}
+
+.produto-card h4 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #FF4081;
+}
+
+.produto-card p {
+    font-size: 1em;
+    color: #666;
+}
+
+
+.produto-card img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.produto-card h4 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #FF4081;
+}
+
+.produto-card p {
+    font-size: 1em;
+    color: #666;
+}
