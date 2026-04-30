@@ -706,13 +706,34 @@
         min-height: 0;
     }
 
-    .product-media {
-        aspect-ratio: 16 / 9;
+    .shop-card[data-product-card] {
+        display: grid;
+        grid-template-columns: minmax(112px, 34%) minmax(0, 1fr);
+    }
+
+    .shop-card[data-product-card] .product-media {
+        height: 100%;
+        min-height: 188px;
+        aspect-ratio: auto;
+    }
+
+    .shop-card[data-product-card] .featured-badge {
+        top: 8px;
+        left: 8px;
+        padding: 5px 7px;
+        font-size: 0.68rem;
+    }
+
+    .shop-card[data-product-card] .product-image-fallback i {
+        width: 56px;
+        height: 56px;
+        font-size: 1.65rem;
     }
 
     .product-info {
-        gap: 9px;
-        padding: 14px;
+        min-width: 0;
+        gap: 8px;
+        padding: 12px;
     }
 
     .product-tag {
@@ -721,26 +742,47 @@
     }
 
     .shop-card h2 {
-        font-size: 1.08rem;
+        font-size: 1.02rem;
     }
 
     .shop-card p {
-        font-size: 0.94rem;
-        line-height: 1.42;
+        font-size: 0.9rem;
+        line-height: 1.35;
+    }
+
+    .product-meta {
+        gap: 6px;
     }
 
     .product-footer {
         align-items: stretch;
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
     }
 
     .product-price {
-        font-size: 1.18rem;
+        font-size: 1.12rem;
     }
 
     .product-footer .btn {
+        min-height: 42px;
         width: 100%;
+        padding: 10px 12px;
+    }
+
+    .product-variation-field {
+        gap: 5px;
+    }
+
+    .product-variation-field select {
+        min-height: 40px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    .product-sku,
+    .product-variations {
+        font-size: 0.78rem;
     }
 
     .cart-panel {
@@ -792,8 +834,12 @@
         padding: 11px;
     }
 
-    .product-media {
-        aspect-ratio: 16 / 9;
+    .shop-card[data-product-card] {
+        grid-template-columns: 104px minmax(0, 1fr);
+    }
+
+    .shop-card[data-product-card] .product-media {
+        min-height: 176px;
     }
 
     .featured-badge {
@@ -803,7 +849,7 @@
     }
 
     .product-info {
-        padding: 13px;
+        padding: 11px;
     }
 
     .cart-panel {
