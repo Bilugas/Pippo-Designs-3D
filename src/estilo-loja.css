@@ -626,27 +626,48 @@
 @media (max-width: 620px) {
     .shop-layout {
         width: min(100% - 24px, 1220px);
-        gap: 22px;
-        margin-top: 28px;
+        gap: 18px;
+        margin-top: 24px;
     }
 
     .shop-heading {
-        margin-bottom: 18px;
+        margin-bottom: 14px;
     }
 
     .how-buy {
-        gap: 14px;
-        margin-bottom: 18px;
-        padding: 16px;
+        gap: 12px;
+        margin-bottom: 14px;
+        padding: 14px;
+    }
+
+    .how-buy h2 {
+        font-size: clamp(1.28rem, 6vw, 1.65rem);
+    }
+
+    .how-buy-steps {
+        gap: 8px;
     }
 
     .how-buy-steps article {
         min-height: 0;
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 4px 10px;
+        padding: 12px;
+    }
+
+    .how-buy-steps strong {
+        grid-row: span 2;
+    }
+
+    .how-buy-steps p {
+        font-size: 0.92rem;
+        line-height: 1.35;
     }
 
     .shop-toolbar {
-        gap: 10px;
-        padding: 14px;
+        gap: 9px;
+        padding: 12px;
         box-shadow: 0 10px 24px rgba(31, 41, 51, 0.05);
     }
 
@@ -661,6 +682,9 @@
 
     .filter-chip {
         scroll-snap-align: start;
+        min-height: 36px;
+        padding: 8px 11px;
+        font-size: 0.86rem;
     }
 
     .filter-field {
@@ -668,14 +692,14 @@
     }
 
     .shop-summary {
-        gap: 6px;
-        margin: 14px 0 12px;
-        font-size: 0.94rem;
+        gap: 4px;
+        margin: 10px 0 10px;
+        font-size: 0.9rem;
     }
 
     .product-grid {
         grid-template-columns: 1fr;
-        gap: 14px;
+        gap: 12px;
     }
 
     .shop-card {
@@ -683,12 +707,12 @@
     }
 
     .product-media {
-        aspect-ratio: 16 / 11;
+        aspect-ratio: 16 / 9;
     }
 
     .product-info {
-        gap: 10px;
-        padding: 16px;
+        gap: 9px;
+        padding: 14px;
     }
 
     .product-tag {
@@ -697,10 +721,11 @@
     }
 
     .shop-card h2 {
-        font-size: 1.16rem;
+        font-size: 1.08rem;
     }
 
     .shop-card p {
+        font-size: 0.94rem;
         line-height: 1.42;
     }
 
@@ -711,7 +736,7 @@
     }
 
     .product-price {
-        font-size: 1.24rem;
+        font-size: 1.18rem;
     }
 
     .product-footer .btn {
@@ -719,7 +744,7 @@
     }
 
     .cart-panel {
-        padding: 16px;
+        padding: 14px;
         box-shadow: 0 12px 28px rgba(31, 41, 51, 0.08);
     }
 
@@ -741,10 +766,16 @@
 
     .mobile-cart-shortcut:not([hidden]) {
         display: inline-flex;
+        right: auto;
+        left: max(14px, env(safe-area-inset-left));
+        max-width: calc(100% - 86px);
+        min-height: 50px;
+        padding: 11px 13px;
+        overflow: hidden;
     }
 
     .cart-toast {
-        bottom: max(142px, calc(142px + env(safe-area-inset-bottom)));
+        bottom: max(136px, calc(136px + env(safe-area-inset-bottom)));
         align-items: flex-start;
         flex-direction: column;
         gap: 8px;
@@ -754,15 +785,15 @@
 @media (max-width: 430px) {
     .shop-layout {
         width: min(100% - 20px, 1220px);
-        margin-top: 24px;
+        margin-top: 20px;
     }
 
     .shop-toolbar {
-        padding: 12px;
+        padding: 11px;
     }
 
     .product-media {
-        aspect-ratio: 1.2 / 1;
+        aspect-ratio: 16 / 9;
     }
 
     .featured-badge {
@@ -772,11 +803,11 @@
     }
 
     .product-info {
-        padding: 14px;
+        padding: 13px;
     }
 
     .cart-panel {
-        padding: 14px;
+        padding: 13px;
     }
 
     .cart-title,
@@ -788,5 +819,12 @@
     .cart-actions button {
         width: 36px;
         height: 36px;
+    }
+
+    .mobile-cart-shortcut span {
+        max-width: 58px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
