@@ -81,6 +81,43 @@ function getProductCategory(product) {
     return product.linha || product.categoria || "Outros";
 }
 
+function getProductIconClass(product) {
+    const searchText = getProductSearchText(product);
+
+    if (searchText.includes("chaveiro")) {
+        return "fa-key";
+    }
+
+    if (searchText.includes("kit") || searchText.includes("bundle")) {
+        return "fa-box-open";
+    }
+
+    if (searchText.includes("sensorial") || searchText.includes("fidget")) {
+        return "fa-hand";
+    }
+
+    if (searchText.includes("geek") || searchText.includes("personagem")) {
+        return "fa-gamepad";
+    }
+
+    if (searchText.includes("colecionavel") || searchText.includes("display")) {
+        return "fa-trophy";
+    }
+
+    return "fa-cube";
+}
+
+function getProductPlaceholderClasses(product) {
+    return [
+        getProductCategory(product),
+        getProductType(product),
+        product.categoria,
+    ]
+        .filter(Boolean)
+        .map((value) => `product-placeholder-${createDomId(value)}`)
+        .join(" ");
+}
+
 function normalizeSearch(value) {
     return String(value ?? "")
         .toLowerCase()
@@ -148,6 +185,7 @@ async function setupProductCatalog() {
     const categoryFilter = document.querySelector("[data-filter-category]");
     const typeFilter = document.querySelector("[data-filter-type]");
     const clearFilters = document.querySelector("[data-clear-filters]");
+    const filterChips = document.querySelector("[data-filter-chips]");
     const productsCount = document.querySelector("[data-products-count]");
 
     if (!grid || !categoryFilter || !typeFilter || !productsCount) {
@@ -172,7 +210,9 @@ async function setupProductCatalog() {
         products = sortCatalogProducts(data);
 
         populateFilters(products, categoryFilter, typeFilter);
+        populateFilterChips(products, filterChips);
         renderProducts(products, filters, grid, productsCount);
+        updateFilterChipState(filterChips, filters);
     } catch (error) {
         productsCount.textContent = "Não foi possível carregar os produtos.";
         grid.innerHTML = `
@@ -196,11 +236,13 @@ async function setupProductCatalog() {
     categoryFilter.addEventListener("change", () => {
         filters.category = categoryFilter.value;
         renderProducts(products, filters, grid, productsCount);
+        updateFilterChipState(filterChips, filters);
     });
 
     typeFilter.addEventListener("change", () => {
         filters.type = typeFilter.value;
         renderProducts(products, filters, grid, productsCount);
+        updateFilterChipState(filterChips, filters);
     });
 
     if (clearFilters) {
@@ -214,6 +256,38 @@ async function setupProductCatalog() {
             categoryFilter.value = "";
             typeFilter.value = "";
             renderProducts(products, filters, grid, productsCount);
+            updateFilterChipState(filterChips, filters);
+        });
+    }
+
+    if (filterChips) {
+        filterChips.addEventListener("click", (event) => {
+            const chip = event.target.closest("[data-filter-chip]");
+
+            if (!chip) {
+                return;
+            }
+
+            const chipType = chip.dataset.filterChip;
+            const value = chip.dataset.value || "";
+
+            if (chipType === "all") {
+                filters.category = "";
+                filters.type = "";
+            }
+
+            if (chipType === "category") {
+                filters.category = filters.category === value ? "" : value;
+            }
+
+            if (chipType === "type") {
+                filters.type = filters.type === value ? "" : value;
+            }
+
+            categoryFilter.value = filters.category;
+            typeFilter.value = filters.type;
+            renderProducts(products, filters, grid, productsCount);
+            updateFilterChipState(filterChips, filters);
         });
     }
 
@@ -237,6 +311,47 @@ function populateFilters(products, categoryFilter, typeFilter) {
         '<option value="">Todos</option>',
         ...types.map((type) => `<option value="${escapeHtml(type)}">${escapeHtml(type)}</option>`),
     ].join("");
+}
+
+function populateFilterChips(products, filterChips) {
+    if (!filterChips) {
+        return;
+    }
+
+    const categories = [...new Set(products.map(getProductCategory))].sort((first, second) => first.localeCompare(second, "pt-BR"));
+    const types = [...new Set(products.map(getProductType))].sort((first, second) => first.localeCompare(second, "pt-BR"));
+    const categoryButtons = categories.map((category) => `
+        <button class="filter-chip" type="button" data-filter-chip="category" data-value="${escapeHtml(category)}">
+            ${escapeHtml(category)}
+        </button>
+    `);
+    const typeButtons = types.map((type) => `
+        <button class="filter-chip" type="button" data-filter-chip="type" data-value="${escapeHtml(type)}">
+            ${escapeHtml(type)}
+        </button>
+    `);
+
+    filterChips.innerHTML = [
+        '<button class="filter-chip all active" type="button" data-filter-chip="all"><i class="fa-solid fa-border-all"></i> Todos</button>',
+        ...categoryButtons,
+        ...typeButtons,
+    ].join("");
+}
+
+function updateFilterChipState(filterChips, filters) {
+    if (!filterChips) {
+        return;
+    }
+
+    filterChips.querySelectorAll("[data-filter-chip]").forEach((chip) => {
+        const chipType = chip.dataset.filterChip;
+        const value = chip.dataset.value || "";
+        const isActive = (chipType === "all" && !filters.category && !filters.type)
+            || (chipType === "category" && filters.category === value)
+            || (chipType === "type" && filters.type === value);
+
+        chip.classList.toggle("active", isActive);
+    });
 }
 
 function renderProducts(products, filters, grid, productsCount) {
@@ -269,6 +384,8 @@ function renderProductCard(product, action = "cart") {
     const category = getProductCategory(product);
     const type = getProductType(product);
     const image = normalizeImagePath(product.imagem);
+    const placeholderClasses = getProductPlaceholderClasses(product);
+    const iconClass = getProductIconClass(product);
     const variations = Array.isArray(product.variacoes) && product.variacoes.length
         ? `<p class="product-variations">Variações: ${product.variacoes.map(escapeHtml).join(", ")}</p>`
         : "";
@@ -307,10 +424,10 @@ function renderProductCard(product, action = "cart") {
 
     return `
         <article class="shop-card ${product.destaque ? "featured" : ""}" data-product-card>
-            <div class="product-media">
+            <div class="product-media ${escapeHtml(placeholderClasses)}">
                 ${product.destaque ? '<span class="featured-badge"><i class="fa-solid fa-star"></i> Destaque</span>' : ""}
                 <img src="${escapeHtml(image)}" alt="${escapeHtml(product.nome)}" loading="lazy">
-                <div class="product-image-fallback" aria-hidden="true"><i class="fa-solid fa-cube"></i></div>
+                <div class="product-image-fallback" aria-hidden="true"><i class="fa-solid ${escapeHtml(iconClass)}"></i></div>
             </div>
             <div class="product-info">
                 <div class="product-meta">
@@ -385,6 +502,10 @@ function setupCart() {
     const cartTotal = document.querySelector("[data-cart-total]");
     const checkoutForm = document.querySelector("[data-checkout-form]");
     const clearCartButton = document.querySelector("[data-clear-cart]");
+    const cartShortcut = document.querySelector("[data-cart-shortcut]");
+    const cartShortcutCount = document.querySelector("[data-cart-shortcut-count]");
+    const cartShortcutTotal = document.querySelector("[data-cart-shortcut-total]");
+    let cartToastTimeout;
 
     if (!cartItems || !cartCount || !cartTotal) {
         return;
@@ -417,6 +538,13 @@ function setupCart() {
 
         cartCount.textContent = `${totalQuantity} ${totalQuantity === 1 ? "item" : "itens"}`;
         cartTotal.textContent = formatMoney(total);
+
+        if (cartShortcut && cartShortcutCount && cartShortcutTotal) {
+            cartShortcut.hidden = !totalQuantity;
+            cartShortcutCount.textContent = `${totalQuantity} ${totalQuantity === 1 ? "item" : "itens"}`;
+            cartShortcutTotal.textContent = formatMoney(total);
+        }
+
         if (clearCartButton) {
             clearCartButton.disabled = !items.length;
         }
@@ -468,6 +596,7 @@ function setupCart() {
         cart.set(cartId, current);
         saveCart();
         renderCart();
+        showCartToast(displayName, current.quantity);
     });
 
     cartItems.addEventListener("click", (event) => {
@@ -553,6 +682,43 @@ function setupCart() {
     }
 
     renderCart();
+
+    function showCartToast(productName, quantity) {
+        const toast = getCartToast();
+        const title = toast.querySelector("[data-toast-title]");
+        const description = toast.querySelector("[data-toast-description]");
+
+        title.textContent = "Produto adicionado";
+        description.textContent = `${productName} no carrinho (${quantity} ${quantity === 1 ? "unidade" : "unidades"}).`;
+        toast.classList.add("active");
+        clearTimeout(cartToastTimeout);
+        cartToastTimeout = setTimeout(() => {
+            toast.classList.remove("active");
+        }, 3200);
+    }
+
+    function getCartToast() {
+        let toast = document.querySelector("[data-cart-toast]");
+
+        if (toast) {
+            return toast;
+        }
+
+        toast = document.createElement("div");
+        toast.className = "cart-toast";
+        toast.dataset.cartToast = "";
+        toast.setAttribute("role", "status");
+        toast.innerHTML = `
+            <div>
+                <strong data-toast-title>Produto adicionado</strong>
+                <span data-toast-description>Item no carrinho.</span>
+            </div>
+            <a href="#cart-panel">Ver carrinho</a>
+        `;
+        document.body.appendChild(toast);
+
+        return toast;
+    }
 }
 
 function setupContactForm() {

@@ -308,7 +308,7 @@ footer .redes-sociais a:hover {
 
     .menu-icon {
         min-height: 52px;
-        display: inline-flex;
+        display: flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
@@ -376,12 +376,17 @@ footer .redes-sociais a:hover {
 
     nav ul li a {
         min-height: 52px;
-        justify-content: flex-start;
+        justify-content: center;
         padding: 13px 16px;
         border: 1px solid var(--border-color);
         border-radius: 8px;
         background: #ffffff;
         box-shadow: 0 8px 18px rgba(31, 41, 51, 0.05);
+    }
+
+    nav ul li a i {
+        width: 20px;
+        text-align: center;
     }
 
     nav ul li a.active {

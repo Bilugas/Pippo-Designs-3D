@@ -49,6 +49,30 @@
                 <p>Filtre por categoria ou tipo, adicione ao carrinho e finalize pelo WhatsApp para confirmar pagamento, prazo e entrega.</p>
             </div>
 
+            <section class="how-buy" aria-labelledby="how-buy-title">
+                <div>
+                    <span class="eyebrow">Como comprar</span>
+                    <h2 id="how-buy-title">Pedido simples, confirmação pelo WhatsApp.</h2>
+                </div>
+                <div class="how-buy-steps">
+                    <article>
+                        <strong>1</strong>
+                        <span>Escolha</span>
+                        <p>Use busca, categorias ou chips rápidos para achar o produto.</p>
+                    </article>
+                    <article>
+                        <strong>2</strong>
+                        <span>Personalize</span>
+                        <p>Selecione variação e adicione observações no carrinho.</p>
+                    </article>
+                    <article>
+                        <strong>3</strong>
+                        <span>Finalize</span>
+                        <p>Envie o pedido pelo WhatsApp para confirmar prazo e entrega.</p>
+                    </article>
+                </div>
+            </section>
+
             <section class="shop-toolbar" aria-label="Filtros da loja">
                 <div class="filter-field search-field">
                     <label for="searchFilter">Buscar produto</label>
@@ -75,6 +99,8 @@
                 </button>
             </section>
 
+            <div class="filter-chips" data-filter-chips aria-label="Filtros rápidos"></div>
+
             <div class="shop-summary" aria-live="polite">
                 <strong data-products-count>Carregando produtos...</strong>
                 <span>Produtos em destaque aparecem primeiro.</span>
@@ -89,7 +115,7 @@
             </div>
         </section>
 
-        <aside class="cart-panel" aria-label="Carrinho de compras">
+        <aside class="cart-panel" id="cart-panel" aria-label="Carrinho de compras">
             <div class="cart-title">
                 <h2>Carrinho</h2>
                 <span data-cart-count>0 itens</span>
@@ -116,6 +142,12 @@
             </form>
         </aside>
     </main>
+
+    <a class="mobile-cart-shortcut" href="#cart-panel" data-cart-shortcut hidden>
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span data-cart-shortcut-count>0 itens</span>
+        <strong data-cart-shortcut-total>R$ 0,00</strong>
+    </a>
 
     <a class="whatsapp-float" href="https://wa.me/5511987550497?text=Ol%C3%A1%2C%20Pippo%20Designs%203D!%20Quero%20fazer%20um%20or%C3%A7amento." target="_blank" rel="noreferrer" aria-label="Falar com a Pippo Designs 3D no WhatsApp">
         <i class="fa-brands fa-whatsapp"></i>
