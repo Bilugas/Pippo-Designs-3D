@@ -86,13 +86,14 @@ main {
 .printer-head {
     position: absolute;
     top: 40px;
-    left: 50%;
+    left: 26px;
     width: 92px;
     height: 48px;
     border-radius: 8px;
     background: var(--secondary-color);
-    transform: translateX(-50%);
     box-shadow: 0 10px 0 #c92f72;
+    animation: printerHeadTravel 12s ease-in-out infinite;
+    z-index: 3;
 }
 
 .printer-head::after {
@@ -106,33 +107,102 @@ main {
     clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
 }
 
-.printed-object {
+.logo-print-area {
     position: absolute;
-    bottom: 38px;
-    left: 50%;
-    width: 132px;
+    right: 40px;
+    bottom: 36px;
+    left: 40px;
+    height: 156px;
     display: grid;
-    gap: 6px;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 18px 18px 8px 8px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.44) 0%, rgba(236, 248, 246, 0.92) 100%);
+}
+
+.logo-print-area::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgba(35, 106, 115, 0.08) 0%, rgba(35, 106, 115, 0) 18%),
+        repeating-linear-gradient(
+            180deg,
+            rgba(35, 106, 115, 0.06) 0 2px,
+            transparent 2px 8px
+        );
+    opacity: 0.75;
+}
+
+.logo-print-surface {
+    position: absolute;
+    right: 14px;
+    bottom: 12px;
+    left: 14px;
+    height: 12px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #24495e 0%, #236a73 48%, #24495e 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32);
+}
+
+.logo-print-reveal {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    width: min(220px, 74%);
+    height: 124px;
+    overflow: hidden;
+    display: grid;
+    place-items: end center;
     transform: translateX(-50%);
 }
 
-.printed-object span {
-    display: block;
-    height: 24px;
-    border-radius: 8px 8px 4px 4px;
-    background: var(--primary-color);
+.logo-print-reveal::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: min(194px, calc(100% - 16px));
+    height: 0;
+    border-radius: 12px 12px 0 0;
+    background: linear-gradient(180deg, rgba(255, 188, 46, 0.12) 0%, rgba(35, 106, 115, 0.22) 100%);
+    transform: translateX(-50%);
+    animation: printReveal 12s linear infinite, printLayerFade 12s ease-in-out infinite;
+    z-index: 0;
 }
 
-.printed-object span:nth-child(2) {
-    width: 78%;
-    justify-self: center;
-    background: #3a8b86;
+.logo-print-layers {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: min(194px, calc(100% - 16px));
+    height: 0;
+    border-radius: 12px 12px 0 0;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.26) 0%, rgba(255, 255, 255, 0) 22%),
+        repeating-linear-gradient(
+            180deg,
+            rgba(35, 106, 115, 0.34) 0 2px,
+            rgba(35, 106, 115, 0.12) 2px 6px
+        );
+    box-shadow: 0 -8px 16px rgba(35, 106, 115, 0.12);
+    transform: translateX(-50%);
+    animation: printReveal 12s linear infinite, printLayerFade 12s ease-in-out infinite;
+    z-index: 1;
 }
 
-.printed-object span:nth-child(3) {
-    width: 48%;
-    justify-self: center;
-    background: var(--accent-color);
+.logo-print-reveal img {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: auto;
+    height: 124px;
+    max-width: 100%;
+    filter: drop-shadow(0 10px 18px rgba(31, 41, 51, 0.14));
+    transform: translateX(-50%);
+    clip-path: inset(100% 0 0 0);
+    animation: logoBuild 12s linear infinite, logoPulse 12s ease-in-out infinite;
+    z-index: 2;
 }
 
 .printer-bed {
@@ -143,6 +213,76 @@ main {
     height: 14px;
     border-radius: 999px;
     background: var(--primary-dark);
+}
+
+@keyframes printerHeadTravel {
+    0%,
+    8% {
+        left: 26px;
+    }
+
+    30% {
+        left: calc(100% - 118px);
+    }
+
+    49% {
+        left: 26px;
+    }
+
+    100% {
+        left: 26px;
+    }
+}
+
+@keyframes printReveal {
+    0%,
+    9% {
+        height: 0;
+    }
+
+    66.67%,
+    100% {
+        height: 112px;
+    }
+}
+
+@keyframes logoBuild {
+    0%,
+    9% {
+        clip-path: inset(100% 0 0 0);
+    }
+
+    66.67%,
+    100% {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+@keyframes printLayerFade {
+    0%,
+    66.67% {
+        opacity: 1;
+    }
+
+    72%,
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes logoPulse {
+    0%,
+    58% {
+        filter: drop-shadow(0 10px 18px rgba(31, 41, 51, 0.12));
+    }
+
+    74% {
+        filter: drop-shadow(0 0 0 rgba(31, 41, 51, 0)) drop-shadow(0 0 24px rgba(255, 188, 46, 0.5));
+    }
+
+    100% {
+        filter: drop-shadow(0 10px 18px rgba(31, 41, 51, 0.12));
+    }
 }
 
 .service-grid,
@@ -410,14 +550,34 @@ main {
         height: 30px;
     }
 
-    .printed-object {
-        bottom: 30px;
-        width: 104px;
-        gap: 5px;
+    .logo-print-area {
+        right: 26px;
+        bottom: 26px;
+        left: 26px;
+        height: 122px;
+        border-radius: 14px 14px 8px 8px;
     }
 
-    .printed-object span {
-        height: 20px;
+    .logo-print-surface {
+        right: 10px;
+        bottom: 9px;
+        left: 10px;
+        height: 10px;
+    }
+
+    .logo-print-reveal {
+        bottom: 18px;
+        width: min(170px, 76%);
+        height: 92px;
+    }
+
+    .logo-print-reveal::before,
+    .logo-print-layers {
+        width: min(152px, calc(100% - 12px));
+    }
+
+    .logo-print-reveal img {
+        height: 92px;
     }
 
     .printer-bed {
@@ -425,6 +585,37 @@ main {
         bottom: 16px;
         left: 22px;
         height: 12px;
+    }
+
+    @keyframes printerHeadTravel {
+        0%,
+        8% {
+            left: 20px;
+        }
+
+        30% {
+            left: calc(100% - 92px);
+        }
+
+        49% {
+            left: 20px;
+        }
+
+        100% {
+            left: 20px;
+        }
+    }
+
+    @keyframes printReveal {
+        0%,
+        9% {
+            height: 0;
+        }
+
+        66.67%,
+        100% {
+            height: 84px;
+        }
     }
 
     .service-grid,
@@ -484,5 +675,15 @@ main {
 
     .printer-stage {
         min-height: 238px;
+    }
+
+    .logo-print-area {
+        right: 22px;
+        left: 22px;
+        height: 106px;
+    }
+
+    .logo-print-reveal {
+        width: min(188px, 78%);
     }
 }

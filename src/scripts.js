@@ -1,6 +1,7 @@
 const whatsappNumber = "5511987550497";
 const productsUrl = "products.json";
 const cartStorageKey = "pippoDesigns3dCart";
+const embeddedProducts = Array.isArray(window.PRODUCTS_DATA) ? window.PRODUCTS_DATA : null;
 const moneyFormatter = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -155,6 +156,20 @@ function sortCatalogProducts(products) {
         });
 }
 
+async function loadProductsData() {
+    if (embeddedProducts) {
+        return embeddedProducts;
+    }
+
+    const response = await fetch(productsUrl);
+
+    if (!response.ok) {
+        throw new Error(`Falha ao carregar ${productsUrl}`);
+    }
+
+    return response.json();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const menuButton = document.querySelector(".menu-icon");
 
@@ -200,13 +215,7 @@ async function setupProductCatalog() {
     };
 
     try {
-        const response = await fetch(productsUrl);
-
-        if (!response.ok) {
-            throw new Error(`Falha ao carregar ${productsUrl}`);
-        }
-
-        const data = await response.json();
+        const data = await loadProductsData();
         products = sortCatalogProducts(data);
 
         populateFilters(products, categoryFilter, typeFilter);
@@ -456,13 +465,7 @@ async function setupFeaturedProducts() {
     }
 
     try {
-        const response = await fetch(productsUrl);
-
-        if (!response.ok) {
-            throw new Error(`Falha ao carregar ${productsUrl}`);
-        }
-
-        const data = await response.json();
+        const data = await loadProductsData();
         const featuredProducts = sortCatalogProducts(data)
             .filter((product) => product.destaque)
             .slice(0, 6);
