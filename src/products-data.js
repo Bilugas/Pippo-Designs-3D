@@ -2,7 +2,7 @@
   {
     "id": "dummy-13",
     "nome": "Dummy 13",
-    "linha": "ColecionÃ¡vel",
+    "linha": "Colecionável",
     "categoria": "Articulado",
     "tipo": "Display",
     "preco": 40,
@@ -40,7 +40,7 @@
   },
   {
     "id": "dragao",
-    "nome": "DragÃ£o",
+    "nome": "Dragão",
     "linha": "Geek",
     "categoria": "Personagem",
     "tipo": "Display",
@@ -78,7 +78,7 @@
   },
   {
     "id": "eevee",
-    "nome": "EvoluÃ§Ãµes Eevee",
+    "nome": "Evoluções Eevee",
     "linha": "Geek Premium",
     "categoria": "Personagem",
     "tipo": "Display",
@@ -169,7 +169,7 @@
   },
   {
     "id": "kit-sensorial-mini",
-    "nome": "Kit Sensorial Mini (3 peÃ§as)",
+    "nome": "Kit Sensorial Mini (3 peças)",
     "linha": "Sensorial",
     "categoria": "Kit",
     "tipo": "Bundle",
@@ -181,7 +181,7 @@
   },
   {
     "id": "kit-sensorial-completo",
-    "nome": "Kit Sensorial Completo (5 peÃ§as)",
+    "nome": "Kit Sensorial Completo (5 peças)",
     "linha": "Sensorial",
     "categoria": "Kit",
     "tipo": "Bundle",
@@ -192,7 +192,7 @@
   },
   {
     "id": "kit-sensorial-premium",
-    "nome": "Kit Sensorial Premium (6 peÃ§as)",
+    "nome": "Kit Sensorial Premium (6 peças)",
     "linha": "Sensorial",
     "categoria": "Kit",
     "tipo": "Bundle",
@@ -393,7 +393,7 @@
     "id": "nfc",
     "nome": "NFC Personalizado",
     "linha": "Tecnologia",
-    "categoria": "AcessÃ³rio",
+    "categoria": "Acessório",
     "tipo": "Funcional",
     "preco": 50,
     "sku": "PD3D-NFC",
@@ -413,7 +413,7 @@
   },
   {
     "id": "patolino-shopping",
-    "nome": "Patolino (CalÃ§a de Shopping)",
+    "nome": "Patolino (Calça de Shopping)",
     "linha": "Geek",
     "categoria": "Personagem",
     "tipo": "Display",
@@ -448,7 +448,7 @@
     "id": "pokebola-af",
     "nome": "Pokebola AF",
     "linha": "Geek",
-    "categoria": "AcessÃ³rio",
+    "categoria": "Acessório",
     "tipo": "Display",
     "preco": 35,
     "sku": "PD3D-POKEBOLA-AF",
@@ -468,7 +468,7 @@
   },
   {
     "id": "quebra-cabeca",
-    "nome": "Quebra-cabeÃ§a",
+    "nome": "Quebra-cabeça",
     "linha": "Educativo",
     "categoria": "Jogo",
     "tipo": "Interativo",
@@ -479,7 +479,7 @@
   },
   {
     "id": "quebra-cabeca-ouro",
-    "nome": "Quebra-cabeÃ§a Ouro",
+    "nome": "Quebra-cabeça Ouro",
     "linha": "Educativo",
     "categoria": "Jogo",
     "tipo": "Interativo",
@@ -490,7 +490,7 @@
   },
   {
     "id": "quebra-cabeca-gato",
-    "nome": "Quebra-cabeÃ§a Gato",
+    "nome": "Quebra-cabeça Gato",
     "linha": "Educativo",
     "categoria": "Jogo",
     "tipo": "Interativo",
@@ -534,7 +534,7 @@
   },
   {
     "id": "tubarao",
-    "nome": "TubarÃ£o",
+    "nome": "Tubarão",
     "linha": "Sensorial",
     "categoria": "Sensorial",
     "tipo": "Articulado",
@@ -545,7 +545,7 @@
   },
   {
     "id": "tubarao-martelo",
-    "nome": "TubarÃ£o Martelo",
+    "nome": "Tubarão Martelo",
     "linha": "Sensorial",
     "categoria": "Sensorial",
     "tipo": "Articulado",
@@ -556,7 +556,7 @@
   },
   {
     "id": "unicornio",
-    "nome": "UnicÃ³rnio",
+    "nome": "Unicórnio",
     "linha": "Sensorial",
     "categoria": "Sensorial",
     "tipo": "Articulado",

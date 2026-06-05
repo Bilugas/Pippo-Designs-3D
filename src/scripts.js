@@ -192,6 +192,11 @@ document.addEventListener("DOMContentLoaded", () => {
     setupCart();
     setupContactForm();
     setupFaq();
+    setupLightbox();
+    setupGlobalCartBadge();
+    setupProductDetail();
+    setupActiveNav();
+    setupScrollToTop();
 });
 
 async function setupProductCatalog() {
@@ -375,6 +380,7 @@ function renderProducts(products, filters, grid, productsCount) {
     productsCount.textContent = `${filteredProducts.length} ${filteredProducts.length === 1 ? "produto encontrado" : "produtos encontrados"}`;
 
     if (!filteredProducts.length) {
+        grid.classList.remove("product-grid-loaded");
         grid.innerHTML = `
             <article class="shop-card product-empty">
                 <div class="product-symbol"><i class="fa-solid fa-magnifying-glass"></i></div>
@@ -386,7 +392,9 @@ function renderProducts(products, filters, grid, productsCount) {
     }
 
     const action = grid.dataset.productAction || "cart";
+    grid.classList.remove("product-grid-loaded");
     grid.innerHTML = filteredProducts.map((product) => renderProductCard(product, action)).join("");
+    requestAnimationFrame(() => grid.classList.add("product-grid-loaded"));
 }
 
 function renderProductCard(product, action = "cart") {
@@ -433,7 +441,7 @@ function renderProductCard(product, action = "cart") {
 
     return `
         <article class="shop-card ${product.destaque ? "featured" : ""}" data-product-card>
-            <div class="product-media ${escapeHtml(placeholderClasses)}">
+            <div class="product-media ${escapeHtml(placeholderClasses)}" data-lightbox data-lightbox-src="${escapeHtml(image)}" data-lightbox-name="${escapeHtml(product.nome)}">
                 ${product.destaque ? '<span class="featured-badge"><i class="fa-solid fa-star"></i> Destaque</span>' : ""}
                 <img src="${escapeHtml(image)}" alt="${escapeHtml(product.nome)}" loading="lazy">
                 <div class="product-image-fallback" aria-hidden="true"><i class="fa-solid ${escapeHtml(iconClass)}"></i></div>
@@ -448,6 +456,9 @@ function renderProductCard(product, action = "cart") {
                 ${variations}
                 ${variationControl}
                 <span class="product-sku">${escapeHtml(product.sku || product.id)}</span>
+                <a class="product-detail-link" href="produto.html?id=${escapeHtml(product.id)}">
+                    <i class="fa-solid fa-circle-info"></i> Detalhes
+                </a>
                 <div class="product-footer">
                     <strong class="product-price">${formatMoney(product.preco)}</strong>
                     ${actionControl}
@@ -482,6 +493,7 @@ async function setupFeaturedProducts() {
         }
 
         grid.innerHTML = featuredProducts.map((product) => renderProductCard(product, "whatsapp")).join("");
+        requestAnimationFrame(() => grid.classList.add("product-grid-loaded"));
         grid.addEventListener("error", (event) => {
             if (event.target.matches(".product-media img")) {
                 event.target.classList.add("is-missing");
@@ -499,6 +511,40 @@ async function setupFeaturedProducts() {
     }
 }
 
+let toastTimeout;
+
+function getToast() {
+    let toast = document.querySelector("[data-cart-toast]");
+
+    if (toast) {
+        return toast;
+    }
+
+    toast = document.createElement("div");
+    toast.className = "cart-toast";
+    toast.dataset.cartToast = "";
+    toast.setAttribute("role", "status");
+    toast.innerHTML = `
+        <div>
+            <strong data-toast-title>Produto adicionado</strong>
+            <span data-toast-description>Item no carrinho.</span>
+        </div>
+        <a href="#cart-panel">Ver carrinho</a>
+    `;
+    document.body.appendChild(toast);
+
+    return toast;
+}
+
+function showToast(title, description) {
+    const toast = getToast();
+    toast.querySelector("[data-toast-title]").textContent = title;
+    toast.querySelector("[data-toast-description]").textContent = description;
+    toast.classList.add("active");
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.remove("active"), 3200);
+}
+
 function setupCart() {
     const cartItems = document.querySelector("[data-cart-items]");
     const cartCount = document.querySelector("[data-cart-count]");
@@ -508,7 +554,6 @@ function setupCart() {
     const cartShortcut = document.querySelector("[data-cart-shortcut]");
     const cartShortcutCount = document.querySelector("[data-cart-shortcut-count]");
     const cartShortcutTotal = document.querySelector("[data-cart-shortcut-total]");
-    let cartToastTimeout;
 
     if (!cartItems || !cartCount || !cartTotal) {
         return;
@@ -599,7 +644,7 @@ function setupCart() {
         cart.set(cartId, current);
         saveCart();
         renderCart();
-        showCartToast(displayName, current.quantity);
+        showToast("Produto adicionado", `${displayName} no carrinho (${current.quantity} ${current.quantity === 1 ? "unidade" : "unidades"}).`);
     });
 
     cartItems.addEventListener("click", (event) => {
@@ -686,42 +731,6 @@ function setupCart() {
 
     renderCart();
 
-    function showCartToast(productName, quantity) {
-        const toast = getCartToast();
-        const title = toast.querySelector("[data-toast-title]");
-        const description = toast.querySelector("[data-toast-description]");
-
-        title.textContent = "Produto adicionado";
-        description.textContent = `${productName} no carrinho (${quantity} ${quantity === 1 ? "unidade" : "unidades"}).`;
-        toast.classList.add("active");
-        clearTimeout(cartToastTimeout);
-        cartToastTimeout = setTimeout(() => {
-            toast.classList.remove("active");
-        }, 3200);
-    }
-
-    function getCartToast() {
-        let toast = document.querySelector("[data-cart-toast]");
-
-        if (toast) {
-            return toast;
-        }
-
-        toast = document.createElement("div");
-        toast.className = "cart-toast";
-        toast.dataset.cartToast = "";
-        toast.setAttribute("role", "status");
-        toast.innerHTML = `
-            <div>
-                <strong data-toast-title>Produto adicionado</strong>
-                <span data-toast-description>Item no carrinho.</span>
-            </div>
-            <a href="#cart-panel">Ver carrinho</a>
-        `;
-        document.body.appendChild(toast);
-
-        return toast;
-    }
 }
 
 function setupContactForm() {
@@ -731,8 +740,71 @@ function setupContactForm() {
         return;
     }
 
+    function getOrCreateError(field) {
+        let err = field.parentElement.querySelector(".field-error");
+
+        if (!err) {
+            err = document.createElement("span");
+            err.className = "field-error";
+            err.setAttribute("role", "alert");
+            field.after(err);
+        }
+
+        return err;
+    }
+
+    function validateField(field) {
+        const err = getOrCreateError(field);
+        let message = "";
+        const value = field.value.trim();
+
+        if (field.name === "contactName" && !value) {
+            message = "Por favor, informe seu nome.";
+        } else if (field.name === "contactPhone" && value) {
+            const digits = value.replace(/\D/g, "");
+
+            if (digits.length < 10 || digits.length > 11) {
+                message = "Telefone inválido. Use (11) 99999-9999.";
+            }
+        } else if (field.name === "contactMessage") {
+            if (!value) {
+                message = "Descreva seu projeto.";
+            } else if (value.length < 10) {
+                message = "Mensagem muito curta (mínimo 10 caracteres).";
+            }
+        }
+
+        err.textContent = message;
+        field.classList.toggle("is-invalid", !!message);
+        field.classList.toggle("is-valid", !message && value.length > 0);
+
+        return !message;
+    }
+
+    form.querySelectorAll("input, textarea").forEach((field) => {
+        field.addEventListener("blur", () => validateField(field));
+        field.addEventListener("input", () => {
+            if (field.classList.contains("is-invalid")) {
+                validateField(field);
+            }
+        });
+    });
+
     form.addEventListener("submit", (event) => {
         event.preventDefault();
+
+        const fields = [...form.querySelectorAll("input, textarea")];
+        const allValid = fields.map(validateField).every(Boolean);
+
+        if (!allValid) {
+            const firstInvalid = form.querySelector(".is-invalid");
+
+            if (firstInvalid) {
+                firstInvalid.focus();
+            }
+
+            return;
+        }
 
         const formData = new FormData(form);
         const name = formData.get("contactName");
@@ -763,5 +835,328 @@ function setupFaq() {
             const isOpen = item.classList.toggle("active");
             button.setAttribute("aria-expanded", String(isOpen));
         });
+    });
+}
+
+function setupLightbox() {
+    let lightbox = null;
+
+    function getLightbox() {
+        if (lightbox) {
+            return lightbox;
+        }
+
+        lightbox = document.createElement("div");
+        lightbox.className = "lightbox-overlay";
+        lightbox.setAttribute("role", "dialog");
+        lightbox.setAttribute("aria-modal", "true");
+        lightbox.setAttribute("aria-label", "Imagem ampliada do produto");
+        lightbox.innerHTML = `
+            <button class="lightbox-close" type="button" aria-label="Fechar">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="lightbox-content">
+                <img class="lightbox-img" src="" alt="">
+                <p class="lightbox-caption"></p>
+            </div>
+        `;
+        document.body.appendChild(lightbox);
+
+        lightbox.addEventListener("click", (event) => {
+            if (event.target === lightbox || event.target.closest(".lightbox-close")) {
+                closeLightbox();
+            }
+        });
+
+        return lightbox;
+    }
+
+    function openLightbox(src, name) {
+        const lb = getLightbox();
+        const img = lb.querySelector(".lightbox-img");
+        const caption = lb.querySelector(".lightbox-caption");
+
+        img.src = src;
+        img.alt = name;
+        caption.textContent = name;
+        lb.classList.add("active");
+        document.body.classList.add("lightbox-open");
+        lb.querySelector(".lightbox-close").focus();
+    }
+
+    function closeLightbox() {
+        if (lightbox) {
+            lightbox.classList.remove("active");
+            document.body.classList.remove("lightbox-open");
+        }
+    }
+
+    document.addEventListener("click", (event) => {
+        const trigger = event.target.closest("[data-lightbox]");
+
+        if (!trigger) {
+            return;
+        }
+
+        const img = trigger.querySelector("img");
+
+        if (img && img.classList.contains("is-missing")) {
+            return;
+        }
+
+        const src = trigger.dataset.lightboxSrc;
+        const name = trigger.dataset.lightboxName || "";
+
+        if (src) {
+            openLightbox(src, name);
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && lightbox && lightbox.classList.contains("active")) {
+            closeLightbox();
+        }
+    });
+}
+
+function setupGlobalCartBadge() {
+    if (document.querySelector("[data-cart-items]")) {
+        return;
+    }
+
+    function getCount() {
+        try {
+            const saved = JSON.parse(localStorage.getItem(cartStorageKey) || "[]");
+
+            if (!Array.isArray(saved)) {
+                return 0;
+            }
+
+            return saved.reduce((sum, item) => sum + (item.quantity || 0), 0);
+        } catch {
+            return 0;
+        }
+    }
+
+    const badge = document.createElement("a");
+    badge.className = "global-cart-badge";
+    badge.href = "loja.html#cart-panel";
+    badge.setAttribute("aria-label", "Ver carrinho na loja");
+    badge.innerHTML = `
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="global-cart-count"></span>
+    `;
+    document.body.appendChild(badge);
+
+    const countEl = badge.querySelector(".global-cart-count");
+
+    function update() {
+        const count = getCount();
+        badge.hidden = count === 0;
+        countEl.textContent = `${count} ${count === 1 ? "item" : "itens"}`;
+    }
+
+    update();
+    window.addEventListener("storage", update);
+}
+
+async function setupProductDetail() {
+    const detail = document.querySelector("[data-product-detail]");
+
+    if (!detail) {
+        return;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get("id");
+
+    if (!productId) {
+        detail.innerHTML = `
+            <article class="shop-card product-error">
+                <div class="product-symbol"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <h2>Produto não encontrado</h2>
+                <p>Nenhum produto foi especificado na URL.</p>
+                <a class="btn secondary" href="loja.html" style="margin-top: 8px">Ver loja</a>
+            </article>
+        `;
+        return;
+    }
+
+    try {
+        const data = await loadProductsData();
+        const product = data.find((p) => p.id === productId);
+
+        if (!product) {
+            detail.innerHTML = `
+                <article class="shop-card product-error">
+                    <div class="product-symbol"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <h2>Produto não encontrado</h2>
+                    <p>O produto <strong>${escapeHtml(productId)}</strong> não existe no catálogo.</p>
+                    <a class="btn secondary" href="loja.html" style="margin-top: 8px">Ver loja</a>
+                </article>
+            `;
+            return;
+        }
+
+        document.title = `${product.nome} - Pippo Designs 3D`;
+
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) {
+            metaDesc.content = `${product.nome} — ${product.categoria || product.linha || "Produto impresso em 3D"} — Pippo Designs 3D.`;
+        }
+
+        const image = normalizeImagePath(product.imagem);
+        const placeholderClasses = getProductPlaceholderClasses(product);
+        const iconClass = getProductIconClass(product);
+        const category = getProductCategory(product);
+        const type = getProductType(product);
+        const hasVariations = Array.isArray(product.variacoes) && product.variacoes.length;
+        const buyMessage = `Olá, Pippo Designs 3D! Quero comprar ou orçar este produto:\n\n${product.nome}\nSKU: ${product.sku || product.id}\nPreço: ${formatMoney(product.preco)}`;
+
+        detail.innerHTML = `
+            <div class="product-detail-media ${escapeHtml(placeholderClasses)}">
+                ${product.destaque ? '<span class="featured-badge"><i class="fa-solid fa-star"></i> Destaque</span>' : ""}
+                <img src="${escapeHtml(image)}" alt="${escapeHtml(product.nome)}">
+                <div class="product-image-fallback" aria-hidden="true"><i class="fa-solid ${escapeHtml(iconClass)}"></i></div>
+            </div>
+            <div class="product-detail-info">
+                <div class="product-meta">
+                    <span class="product-tag">${escapeHtml(category)}</span>
+                    <span class="product-tag type">${escapeHtml(type)}</span>
+                </div>
+                <h1 class="product-detail-name">${escapeHtml(product.nome)}</h1>
+                <strong class="product-detail-price">${formatMoney(product.preco)}</strong>
+                <p class="product-detail-desc">${escapeHtml(product.categoria || product.linha || "Produto impresso em 3D")}</p>
+                ${hasVariations ? `
+                <div class="product-variation-field">
+                    <label for="detail-variation">Variação</label>
+                    <select id="detail-variation" data-detail-variation>
+                        ${product.variacoes.map((v) => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("")}
+                    </select>
+                </div>` : ""}
+                <span class="product-sku">${escapeHtml(product.sku || product.id)}</span>
+                <div class="product-detail-actions">
+                    <button class="btn primary" type="button" data-detail-add-cart>
+                        <i class="fa-solid fa-cart-plus"></i> Adicionar ao carrinho
+                    </button>
+                    <a class="btn secondary" href="${escapeHtml(buildWhatsAppUrl(buyMessage))}" target="_blank" rel="noreferrer">
+                        <i class="fa-brands fa-whatsapp"></i> Comprar pelo WhatsApp
+                    </a>
+                    <button class="btn secondary" type="button" data-share-btn>
+                        <i class="fa-solid fa-share-nodes"></i> Compartilhar
+                    </button>
+                </div>
+                <a class="text-link" href="loja.html">
+                    <i class="fa-solid fa-arrow-left"></i> Voltar para a loja
+                </a>
+            </div>
+        `;
+
+        const img = detail.querySelector("img");
+
+        if (img) {
+            img.addEventListener("error", () => img.classList.add("is-missing"));
+        }
+
+        const addCartBtn = detail.querySelector("[data-detail-add-cart]");
+
+        if (addCartBtn) {
+            addCartBtn.addEventListener("click", () => {
+                const variationSelect = detail.querySelector("[data-detail-variation]");
+                const variation = variationSelect ? variationSelect.value : "";
+                const cartId = variation ? `${product.id}::${variation}` : product.id;
+                const displayName = variation ? `${product.nome} - ${variation}` : product.nome;
+
+                try {
+                    const saved = JSON.parse(localStorage.getItem(cartStorageKey) || "[]");
+                    const cart = new Map(Array.isArray(saved) ? saved.map((item) => [item.id, item]) : []);
+                    const current = cart.get(cartId) || {
+                        id: cartId,
+                        productId: product.id,
+                        name: displayName,
+                        price: product.preco,
+                        sku: product.sku || product.id,
+                        variation,
+                        note: "",
+                        quantity: 0,
+                    };
+
+                    current.quantity += 1;
+                    cart.set(cartId, current);
+                    localStorage.setItem(cartStorageKey, JSON.stringify(Array.from(cart.values())));
+
+                    showToast("Produto adicionado", `${displayName} no carrinho (${current.quantity} ${current.quantity === 1 ? "unidade" : "unidades"}).`);
+
+                    addCartBtn.innerHTML = '<i class="fa-solid fa-check"></i> Adicionado!';
+                    addCartBtn.disabled = true;
+
+                    setTimeout(() => {
+                        addCartBtn.innerHTML = '<i class="fa-solid fa-cart-plus"></i> Adicionar ao carrinho';
+                        addCartBtn.disabled = false;
+                    }, 2200);
+                } catch {
+                    // ignore localStorage errors
+                }
+            });
+        }
+
+        const shareBtn = detail.querySelector("[data-share-btn]");
+        if (shareBtn) {
+            shareBtn.addEventListener("click", () => {
+                const url = window.location.href;
+                if (navigator.share) {
+                    navigator.share({ title: product.nome, url }).catch(() => {});
+                } else {
+                    navigator.clipboard.writeText(url).then(() => {
+                        shareBtn.innerHTML = '<i class="fa-solid fa-check"></i> Link copiado!';
+                        setTimeout(() => {
+                            shareBtn.innerHTML = '<i class="fa-solid fa-share-nodes"></i> Compartilhar';
+                        }, 2000);
+                    }).catch(() => {});
+                }
+            });
+        }
+
+    } catch (error) {
+        detail.innerHTML = `
+            <article class="shop-card product-error">
+                <div class="product-symbol"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <h2>Erro ao carregar produto</h2>
+                <p>Confira se o arquivo products.json está disponível pelo servidor local.</p>
+                <a class="btn secondary" href="loja.html" style="margin-top: 8px">Ver loja</a>
+            </article>
+        `;
+        console.error(error);
+    }
+}
+
+function setupActiveNav() {
+    const filename = window.location.pathname.split("/").pop() || "index.html";
+    const effectiveFile = filename === "produto.html" ? "loja.html" : filename;
+
+    document.querySelectorAll(".menu a[href]").forEach((link) => {
+        const href = link.getAttribute("href");
+        const linkFile = href.split("?")[0].split("#")[0];
+        if (linkFile === effectiveFile || (effectiveFile === "" && linkFile === "index.html")) {
+            link.classList.add("active");
+        }
+    });
+}
+
+function setupScrollToTop() {
+    const btn = document.createElement("button");
+    btn.className = "scroll-to-top";
+    btn.type = "button";
+    btn.setAttribute("aria-label", "Voltar ao topo da página");
+    btn.innerHTML = '<i class="fa-solid fa-chevron-up"></i>';
+    btn.hidden = true;
+    document.body.appendChild(btn);
+
+    window.addEventListener("scroll", () => {
+        btn.hidden = window.scrollY < 320;
+    }, { passive: true });
+
+    btn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
     });
 }
