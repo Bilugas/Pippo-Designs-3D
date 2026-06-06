@@ -1,0 +1,18 @@
+# Dependências
+node_modules/
+
+# Servidor de desenvolvimento local
+tmp/
+
+# Sistemas operacionais
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+*.code-workspace
+.idea/
+
+# Logs
+*.log
