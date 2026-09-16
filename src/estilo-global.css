@@ -270,6 +270,12 @@ footer p {
     margin: 6px 0;
 }
 
+footer .footer-links a {
+    color: var(--footer-text-color);
+    font-weight: 900;
+    text-decoration: underline;
+}
+
 footer .redes-sociais {
     margin-top: 12px;
 }

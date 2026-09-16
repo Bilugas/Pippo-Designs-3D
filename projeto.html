@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produto - Pippo Designs 3D</title>
-    <meta name="description" content="Detalhes e compra de produto da Pippo Designs 3D.">
+    <title>Kit - Pippo Designs 3D</title>
+    <meta name="description" content="Monte seu kit personalizado de produtos impressos em 3D da Pippo Designs 3D.">
     <link rel="stylesheet" href="src/estilo-global.css">
+    <link rel="stylesheet" href="src/estilo-loja.css">
     <link rel="stylesheet" href="src/estilo-produto.css">
+    <link rel="stylesheet" href="src/estilo-projeto.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700;800;900&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="src/img/pippo-designs-3d-favicon.png">
-    <script src="src/products-data.js" defer></script>
+    <script src="src/projetos-data.js" defer></script>
     <script src="src/scripts.js" defer></script>
 </head>
 <body>
@@ -19,7 +21,7 @@
         <a class="logo" href="index.html" aria-label="Pippo Designs 3D">
             <img src="src/img/pippo-designs-3d-logo.png" alt="Logo da Pippo Designs 3D">
         </a>
-        <p>Produto impresso em 3D</p>
+        <p>Monte seu kit</p>
     </header>
 
     <nav>
@@ -36,20 +38,20 @@
         </ul>
     </nav>
 
-    <main class="product-detail-page" id="main-content">
+    <main class="product-detail-page project-detail-page" id="main-content">
         <nav class="breadcrumb" aria-label="Navegação estrutural">
             <a href="index.html">Início</a>
             <i class="fa-solid fa-chevron-right"></i>
             <a href="loja.html">Loja</a>
             <i class="fa-solid fa-chevron-right"></i>
-            <span>Produto</span>
+            <span>Kit</span>
         </nav>
 
-        <div class="product-detail-grid" data-product-detail>
+        <div class="project-detail-grid" data-project-detail>
             <article class="shop-card product-loading" style="grid-column: 1 / -1; padding: 32px">
                 <div class="product-symbol"><i class="fa-solid fa-spinner"></i></div>
-                <h2>Carregando produto</h2>
-                <p>Buscando detalhes do produto.</p>
+                <h2>Carregando kit</h2>
+                <p>Buscando detalhes do kit.</p>
             </article>
         </div>
     </main>
