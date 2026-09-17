@@ -16,10 +16,12 @@
     <link rel="stylesheet" href="src/estilo-global.css">
     <link rel="stylesheet" href="src/estilo-produtos.css">
     <link rel="stylesheet" href="src/estilo-loja.css">
+    <link rel="stylesheet" href="src/estilo-projeto.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700;800;900&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="src/img/pippo-designs-3d-favicon.png">
     <script src="src/products-data.js" defer></script>
+    <script src="src/projetos-data.js" defer></script>
     <script src="src/scripts.js" defer></script>
 </head>
 <body>
@@ -50,6 +52,23 @@
             <span class="eyebrow">Catálogo</span>
             <h1>Opções para criar, personalizar e vender.</h1>
             <p>Use este catálogo como ponto de partida. Cada item pode receber ajuste de cor, tamanho, nome, quantidade e acabamento.</p>
+        </section>
+
+        <section class="catalog-section">
+            <div class="category-heading">
+                <i class="fa-solid fa-boxes-stacked"></i>
+                <div>
+                    <h2>Peças avulsas</h2>
+                    <p>Itens vendidos separadamente, fora dos kits. Para montar um kit completo, visite a loja.</p>
+                </div>
+            </div>
+            <div class="product-grid loose-items-grid" data-catalog-items-grid aria-live="polite">
+                <article class="shop-card product-loading">
+                    <div class="product-symbol"><i class="fa-solid fa-spinner"></i></div>
+                    <h2>Carregando itens</h2>
+                    <p>Buscando os itens do arquivo projetos.json.</p>
+                </article>
+            </div>
         </section>
 
         <section class="catalog-section product-catalog-section">
@@ -100,18 +119,6 @@
                     <h2>Carregando catálogo</h2>
                     <p>Buscando os produtos do arquivo products.json.</p>
                 </article>
-            </div>
-        </section>
-
-        <section class="pdf-feature">
-            <div>
-                <span class="eyebrow">Catálogo completo</span>
-                <h2>Serenidad</h2>
-                <p>Consulte o PDF com a linha Serenidad e envie a referência do item para orçamento ou pedido personalizado.</p>
-            </div>
-            <div class="catalog-actions">
-                <a class="btn primary" href="catalogo-serenidad.html"><i class="fa-solid fa-book-open"></i> Ver catálogo</a>
-                <a class="btn secondary" href="src/catalogos/pippo-serenidad.pdf" target="_blank" rel="noreferrer"><i class="fa-solid fa-file-pdf"></i> Abrir PDF</a>
             </div>
         </section>
 

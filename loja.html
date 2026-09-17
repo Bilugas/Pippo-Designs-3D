@@ -15,10 +15,12 @@
     <meta name="twitter:card" content="summary_large_image">
     <link rel="stylesheet" href="src/estilo-global.css">
     <link rel="stylesheet" href="src/estilo-loja.css">
+    <link rel="stylesheet" href="src/estilo-projeto.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700;800;900&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="src/img/pippo-designs-3d-favicon.png">
     <script src="src/products-data.js" defer></script>
+    <script src="src/projetos-data.js" defer></script>
     <script src="src/scripts.js" defer></script>
 </head>
 <body>
@@ -51,6 +53,20 @@
                 <h1>Escolha seus produtos</h1>
                 <p>Filtre por categoria ou tipo, adicione ao carrinho e finalize pelo WhatsApp para confirmar pagamento, prazo e entrega.</p>
             </div>
+
+            <section class="shop-kits" aria-labelledby="shop-kits-title">
+                <div class="page-heading" style="margin-bottom: 14px">
+                    <span class="eyebrow">Monte do seu jeito</span>
+                    <h2 id="shop-kits-title">Kits personalizáveis</h2>
+                </div>
+                <div class="product-grid" data-projects-grid aria-live="polite">
+                    <article class="shop-card product-loading">
+                        <div class="product-symbol"><i class="fa-solid fa-spinner"></i></div>
+                        <h2>Carregando kits</h2>
+                        <p>Buscando os kits do arquivo projetos.json.</p>
+                    </article>
+                </div>
+            </section>
 
             <section class="how-buy" aria-labelledby="how-buy-title">
                 <div>

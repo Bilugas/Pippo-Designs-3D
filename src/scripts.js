@@ -1,7 +1,9 @@
 const whatsappNumber = "5511987550497";
 const productsUrl = "products.json";
+const projetosUrl = "projetos.json";
 const cartStorageKey = "pippoDesigns3dCart";
 const embeddedProducts = Array.isArray(window.PRODUCTS_DATA) ? window.PRODUCTS_DATA : null;
+const embeddedProjetos = Array.isArray(window.PROJETOS_DATA) ? window.PROJETOS_DATA : null;
 const moneyFormatter = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
@@ -170,6 +172,30 @@ async function loadProductsData() {
     return response.json();
 }
 
+async function loadProjetosData() {
+    if (embeddedProjetos) {
+        return embeddedProjetos;
+    }
+
+    const response = await fetch(projetosUrl);
+
+    if (!response.ok) {
+        throw new Error(`Falha ao carregar ${projetosUrl}`);
+    }
+
+    return response.json();
+}
+
+function humanizeSlug(value) {
+    if (!value) {
+        return "";
+    }
+
+    const text = String(value).replace(/[-_]+/g, " ").trim();
+
+    return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const menuButton = document.querySelector(".menu-icon");
 
@@ -189,12 +215,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setupProductCatalog();
     setupFeaturedProducts();
+    setupProjectsCatalog();
+    setupCatalogLooseItems();
     setupCart();
     setupContactForm();
     setupFaq();
     setupLightbox();
     setupGlobalCartBadge();
     setupProductDetail();
+    setupProjetoDetail();
     setupActiveNav();
     setupScrollToTop();
 });
@@ -505,6 +534,175 @@ async function setupFeaturedProducts() {
                 <div class="product-symbol"><i class="fa-solid fa-triangle-exclamation"></i></div>
                 <h2>Destaques indisponíveis</h2>
                 <p>Confira se o arquivo products.json está disponível pelo servidor local.</p>
+            </article>
+        `;
+        console.error(error);
+    }
+}
+
+function getProjetoStartingPrice(projeto) {
+    const prices = [];
+
+    (projeto.kits || []).forEach((kit) => {
+        if (kit.ativo !== false && typeof kit.preco === "number") {
+            prices.push(kit.preco);
+        }
+    });
+
+    (projeto.itens || []).forEach((item) => {
+        if (item.avulso && item.ativo !== false && typeof item.preco === "number") {
+            prices.push(item.preco);
+        }
+    });
+
+    return prices.length ? Math.min(...prices) : null;
+}
+
+function renderProjetoCard(projeto) {
+    const image = normalizeImagePath(projeto.capa);
+    const placeholderClasses = `product-placeholder-${createDomId(projeto.categoria || "kit")}`;
+    const startingPrice = getProjetoStartingPrice(projeto);
+
+    return `
+        <article class="shop-card project-card ${projeto.destaque ? "featured" : ""}">
+            <div class="product-media ${escapeHtml(placeholderClasses)}">
+                ${projeto.destaque ? '<span class="featured-badge"><i class="fa-solid fa-star"></i> Destaque</span>' : ""}
+                <img src="${escapeHtml(image)}" alt="${escapeHtml(projeto.titulo)}" loading="lazy">
+                <div class="product-image-fallback" aria-hidden="true"><i class="fa-solid fa-boxes-stacked"></i></div>
+            </div>
+            <div class="product-info">
+                <div class="product-meta">
+                    <span class="product-tag">${escapeHtml(humanizeSlug(projeto.categoria))}</span>
+                </div>
+                <h2>${escapeHtml(projeto.titulo)}</h2>
+                <p>${escapeHtml(projeto.resumo || "")}</p>
+                <div class="product-footer">
+                    <strong class="product-price">${startingPrice != null ? `A partir de ${formatMoney(startingPrice)}` : "Consulte"}</strong>
+                    <a class="btn primary" href="projeto.html?id=${encodeURIComponent(projeto.id)}">
+                        <i class="fa-solid fa-sliders"></i> Montar kit
+                    </a>
+                </div>
+            </div>
+        </article>
+    `;
+}
+
+async function setupProjectsCatalog() {
+    const grid = document.querySelector("[data-projects-grid]");
+
+    if (!grid) {
+        return;
+    }
+
+    try {
+        const data = await loadProjetosData();
+        const projetos = data.filter((projeto) => projeto.ativo !== false);
+
+        if (!projetos.length) {
+            grid.innerHTML = `
+                <article class="shop-card product-empty">
+                    <div class="product-symbol"><i class="fa-solid fa-boxes-stacked"></i></div>
+                    <h2>Nenhum kit disponível</h2>
+                    <p>Em breve novos kits por aqui.</p>
+                </article>
+            `;
+            return;
+        }
+
+        grid.innerHTML = projetos.map((projeto) => renderProjetoCard(projeto)).join("");
+        requestAnimationFrame(() => grid.classList.add("product-grid-loaded"));
+        grid.addEventListener("error", (event) => {
+            if (event.target.matches(".product-media img")) {
+                event.target.classList.add("is-missing");
+            }
+        }, true);
+    } catch (error) {
+        grid.innerHTML = `
+            <article class="shop-card product-error">
+                <div class="product-symbol"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <h2>Kits indisponíveis</h2>
+                <p>Confira se o arquivo projetos.json está disponível pelo servidor local.</p>
+            </article>
+        `;
+        console.error(error);
+    }
+}
+
+async function setupCatalogLooseItems() {
+    const grid = document.querySelector("[data-catalog-items-grid]");
+
+    if (!grid) {
+        return;
+    }
+
+    try {
+        const data = await loadProjetosData();
+        const items = data
+            .filter((projeto) => projeto.ativo !== false)
+            .flatMap((projeto) => (Array.isArray(projeto.itens) ? projeto.itens : [])
+                .filter((item) => item.avulso && item.ativo !== false && item.preco != null)
+                .map((item) => ({ ...item, projetoId: projeto.id })));
+
+        if (!items.length) {
+            grid.innerHTML = `
+                <article class="shop-card product-empty">
+                    <div class="product-symbol"><i class="fa-solid fa-boxes-stacked"></i></div>
+                    <h2>Nenhum item disponível</h2>
+                    <p>Em breve novas peças por aqui.</p>
+                </article>
+            `;
+            return;
+        }
+
+        grid.innerHTML = items.map((item) => renderLooseItemCard(item)).join("");
+        requestAnimationFrame(() => grid.classList.add("product-grid-loaded"));
+
+        grid.addEventListener("click", (event) => {
+            const button = event.target.closest("[data-loose-add-cart]");
+
+            if (!button) {
+                return;
+            }
+
+            const card = button.closest("[data-loose-item]");
+            const item = items.find((i) => i.id === card.dataset.itemId);
+
+            if (!item) {
+                return;
+            }
+
+            const variationSelect = card.querySelector("[data-loose-variation]");
+            const variation = variationSelect ? variationSelect.value : "";
+            const cartId = variation ? `${item.projetoId}-${item.id}::${variation}` : `${item.projetoId}-${item.id}`;
+            const displayName = variation ? `${item.nome} - ${variation}` : item.nome;
+
+            const current = addLineToCartStorage(cartId, () => ({
+                id: cartId,
+                productId: item.id,
+                name: displayName,
+                price: item.preco,
+                sku: item.id,
+                variation,
+                note: "",
+                quantity: 0,
+            }));
+
+            if (current) {
+                showToast("Produto adicionado", `${displayName} no carrinho (${current.quantity} ${current.quantity === 1 ? "unidade" : "unidades"}).`);
+            }
+        });
+
+        grid.addEventListener("error", (event) => {
+            if (event.target.matches(".product-media img")) {
+                event.target.classList.add("is-missing");
+            }
+        }, true);
+    } catch (error) {
+        grid.innerHTML = `
+            <article class="shop-card product-error">
+                <div class="product-symbol"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <h2>Itens indisponíveis</h2>
+                <p>Confira se o arquivo projetos.json está disponível pelo servidor local.</p>
             </article>
         `;
         console.error(error);
@@ -1123,6 +1321,558 @@ async function setupProductDetail() {
                 <div class="product-symbol"><i class="fa-solid fa-triangle-exclamation"></i></div>
                 <h2>Erro ao carregar produto</h2>
                 <p>Confira se o arquivo products.json está disponível pelo servidor local.</p>
+                <a class="btn secondary" href="loja.html" style="margin-top: 8px">Ver loja</a>
+            </article>
+        `;
+        console.error(error);
+    }
+}
+
+function addLineToCartStorage(cartId, lineFactory) {
+    try {
+        const saved = JSON.parse(localStorage.getItem(cartStorageKey) || "[]");
+        const cart = new Map(Array.isArray(saved) ? saved.map((item) => [item.id, item]) : []);
+        const current = cart.get(cartId) || lineFactory();
+
+        current.quantity += 1;
+        cart.set(cartId, current);
+        localStorage.setItem(cartStorageKey, JSON.stringify(Array.from(cart.values())));
+
+        return current;
+    } catch {
+        return null;
+    }
+}
+
+function formatEscolhaLabel(tipo) {
+    const labels = {
+        fruta: "frutas",
+        legume: "legumes",
+    };
+
+    return labels[tipo] || tipo;
+}
+
+function buildKitVariationSummary(projeto, kit, selections) {
+    return kit.escolhas.map((escolha, index) => {
+        if (escolha.de === "variacoes") {
+            const target = projeto.itens.find((item) => item.id === escolha.tipo);
+            const variationId = selections[index];
+            const variation = target && Array.isArray(target.variacoes)
+                ? target.variacoes.find((v) => v.id === variationId)
+                : null;
+            const label = target ? target.nome : "Variação";
+
+            return variation ? `${label}: ${variation.nome} (${variation.cor})` : `${label}: -`;
+        }
+
+        const picked = selections[index];
+        const parts = [];
+
+        if (picked instanceof Map) {
+            picked.forEach((qty, itemId) => {
+                if (qty > 0) {
+                    const item = projeto.itens.find((i) => i.id === itemId);
+                    parts.push(`${item ? item.nome : itemId} x${qty}`);
+                }
+            });
+        }
+
+        return `${formatEscolhaLabel(escolha.tipo)}: ${parts.join(", ") || "-"}`;
+    }).join(" | ");
+}
+
+function buildKitWhatsAppMessage(projeto, kit, selections) {
+    const variation = buildKitVariationSummary(projeto, kit, selections);
+    const lines = variation.split(" | ").map((line) => `- ${line}`).join("\n");
+
+    return `Olá, Pippo Designs 3D! Quero comprar ou orçar este kit:\n\n${kit.nome} (${projeto.titulo})\nPreço: ${formatMoney(kit.preco)}\nConfiguração:\n${lines}`;
+}
+
+function renderLooseItemCard(item) {
+    const image = normalizeImagePath(item.imagem);
+    const hasVariations = Array.isArray(item.variacoes) && item.variacoes.length;
+    const variationControl = hasVariations ? `
+        <div class="product-variation-field">
+            <label for="loose-variation-${escapeHtml(createDomId(item.id))}">Cor</label>
+            <select id="loose-variation-${escapeHtml(createDomId(item.id))}" data-loose-variation>
+                ${item.variacoes.map((v) => `<option value="${escapeHtml(v.nome)}">${escapeHtml(v.nome)} (${escapeHtml(v.cor)})</option>`).join("")}
+            </select>
+        </div>
+    ` : "";
+
+    return `
+        <article class="shop-card" data-loose-item data-item-id="${escapeHtml(item.id)}">
+            <div class="product-media">
+                <img src="${escapeHtml(image)}" alt="${escapeHtml(item.nome)}" loading="lazy">
+                <div class="product-image-fallback" aria-hidden="true"><i class="fa-solid fa-cube"></i></div>
+            </div>
+            <div class="product-info">
+                <h2>${escapeHtml(item.nome)}</h2>
+                ${item.obs ? `<p>${escapeHtml(item.obs)}</p>` : ""}
+                ${item.descricao ? `<p>${escapeHtml(item.descricao)}</p>` : ""}
+                ${variationControl}
+                <div class="product-footer">
+                    <strong class="product-price">${formatMoney(item.preco)}</strong>
+                    <button class="btn primary" type="button" data-loose-add-cart>
+                        <i class="fa-solid fa-cart-plus"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+        </article>
+    `;
+}
+
+async function setupProjetoDetail() {
+    const detail = document.querySelector("[data-project-detail]");
+
+    if (!detail) {
+        return;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const projetoId = params.get("id");
+
+    if (!projetoId) {
+        detail.innerHTML = `
+            <article class="shop-card product-error">
+                <div class="product-symbol"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <h2>Kit não encontrado</h2>
+                <p>Nenhum kit foi especificado na URL.</p>
+                <a class="btn secondary" href="loja.html" style="margin-top: 8px">Ver loja</a>
+            </article>
+        `;
+        return;
+    }
+
+    try {
+        const data = await loadProjetosData();
+        const projeto = data.find((p) => p.id === projetoId);
+
+        if (!projeto) {
+            detail.innerHTML = `
+                <article class="shop-card product-error">
+                    <div class="product-symbol"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <h2>Kit não encontrado</h2>
+                    <p>O kit <strong>${escapeHtml(projetoId)}</strong> não existe no catálogo.</p>
+                    <a class="btn secondary" href="loja.html" style="margin-top: 8px">Ver loja</a>
+                </article>
+            `;
+            return;
+        }
+
+        document.title = `${projeto.titulo} - Pippo Designs 3D`;
+
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) {
+            metaDesc.content = `${projeto.titulo} — ${projeto.resumo || "Produto impresso em 3D"} — Pippo Designs 3D.`;
+        }
+
+        const images = Array.isArray(projeto.imagens) && projeto.imagens.length
+            ? projeto.imagens
+            : [projeto.capa].filter(Boolean);
+        const placeholderClasses = `product-placeholder-${createDomId(projeto.categoria || "kit")}`;
+        const looseItems = projeto.itens.filter((item) => item.avulso && item.ativo !== false && item.preco != null);
+
+        detail.innerHTML = `
+            <div class="project-gallery">
+                <div class="project-gallery-main product-detail-media ${escapeHtml(placeholderClasses)}">
+                    <img data-gallery-image src="${escapeHtml(normalizeImagePath(images[0]))}" alt="${escapeHtml(projeto.titulo)}">
+                    <div class="product-image-fallback" aria-hidden="true"><i class="fa-solid fa-cube"></i></div>
+                </div>
+                ${images.length > 1 ? `
+                <div class="project-gallery-thumbs" data-gallery-thumbs>
+                    ${images.map((img, index) => `
+                        <button type="button" class="project-thumb${index === 0 ? " active" : ""}" data-gallery-thumb data-src="${escapeHtml(normalizeImagePath(img))}">
+                            <img src="${escapeHtml(normalizeImagePath(img))}" alt="Foto ${index + 1} de ${escapeHtml(projeto.titulo)}">
+                        </button>
+                    `).join("")}
+                </div>` : ""}
+            </div>
+            <div class="project-info">
+                <div class="product-meta">
+                    ${projeto.categoria ? `<span class="product-tag">${escapeHtml(humanizeSlug(projeto.categoria))}</span>` : ""}
+                    ${projeto.material ? `<span class="product-tag type">${escapeHtml(projeto.material)}</span>` : ""}
+                    ${projeto.publico ? `<span class="product-tag">${escapeHtml(projeto.publico)}</span>` : ""}
+                </div>
+                <h1 class="project-title">${escapeHtml(projeto.titulo)}</h1>
+                <p class="project-summary">${escapeHtml(projeto.resumo || "")}</p>
+                ${projeto.detalhes ? `<p class="project-details-text">${escapeHtml(projeto.detalhes)}</p>` : ""}
+            </div>
+
+            <section class="kit-builder" aria-labelledby="kit-builder-title">
+                <h2 id="kit-builder-title">Monte seu kit</h2>
+                <div class="kit-options" data-kit-options role="tablist"></div>
+                <div class="kit-config" data-kit-config></div>
+                <div class="kit-summary">
+                    <div class="kit-summary-progress" data-kit-progress></div>
+                    <div class="kit-summary-actions">
+                        <strong class="kit-summary-price" data-kit-price></strong>
+                        <button class="btn primary" type="button" data-kit-add-cart disabled>
+                            <i class="fa-solid fa-cart-plus"></i> Adicionar ao carrinho
+                        </button>
+                        <a class="btn secondary is-disabled" data-kit-whatsapp href="#" target="_blank" rel="noreferrer">
+                            <i class="fa-brands fa-whatsapp"></i> Comprar pelo WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            ${looseItems.length ? `
+            <section class="loose-items" aria-labelledby="loose-items-title">
+                <h2 id="loose-items-title">Compre peças avulsas</h2>
+                <div class="product-grid loose-items-grid" data-loose-items-grid></div>
+            </section>` : ""}
+
+            <a class="text-link back-link" href="loja.html">
+                <i class="fa-solid fa-arrow-left"></i> Voltar para a loja
+            </a>
+        `;
+
+        const mainImg = detail.querySelector("[data-gallery-image]");
+
+        if (mainImg) {
+            mainImg.addEventListener("error", () => mainImg.classList.add("is-missing"));
+        }
+
+        const thumbsWrap = detail.querySelector("[data-gallery-thumbs]");
+
+        if (thumbsWrap && mainImg) {
+            thumbsWrap.addEventListener("click", (event) => {
+                const thumb = event.target.closest("[data-gallery-thumb]");
+
+                if (!thumb) {
+                    return;
+                }
+
+                thumbsWrap.querySelectorAll(".project-thumb").forEach((el) => el.classList.remove("active"));
+                thumb.classList.add("active");
+                mainImg.classList.remove("is-missing");
+                mainImg.src = thumb.dataset.src;
+            });
+        }
+
+        const kits = Array.isArray(projeto.kits) ? projeto.kits.filter((kit) => kit.ativo !== false) : [];
+        const kitOptions = detail.querySelector("[data-kit-options]");
+        const kitConfig = detail.querySelector("[data-kit-config]");
+        const kitProgress = detail.querySelector("[data-kit-progress]");
+        const kitPrice = detail.querySelector("[data-kit-price]");
+        const kitAddBtn = detail.querySelector("[data-kit-add-cart]");
+        const kitWhatsappLink = detail.querySelector("[data-kit-whatsapp]");
+
+        let selectedKitId = kits.length ? kits[0].id : null;
+        let selections = {};
+
+        function getEscolhaCandidates(escolha) {
+            if (escolha.de === "variacoes") {
+                const target = projeto.itens.find((item) => item.id === escolha.tipo);
+
+                return {
+                    kind: "variacoes",
+                    target,
+                    options: target && Array.isArray(target.variacoes) ? target.variacoes : [],
+                };
+            }
+
+            return {
+                kind: "quantidade",
+                options: projeto.itens.filter((item) => item.tipo === escolha.tipo && item.ativo !== false && item.avulso),
+            };
+        }
+
+        function getEscolhaCount(index, escolha) {
+            const picked = selections[index];
+
+            if (escolha.de === "variacoes") {
+                return picked ? 1 : 0;
+            }
+
+            if (!(picked instanceof Map)) {
+                return 0;
+            }
+
+            let total = 0;
+            picked.forEach((qty) => { total += qty; });
+
+            return total;
+        }
+
+        function isKitComplete(kit) {
+            return kit.escolhas.every((escolha, index) => getEscolhaCount(index, escolha) >= escolha.quantidade);
+        }
+
+        function renderKitOptions() {
+            kitOptions.innerHTML = kits.map((kit) => `
+                <button type="button" class="kit-option${kit.id === selectedKitId ? " active" : ""}" data-kit-option data-kit-id="${escapeHtml(kit.id)}">
+                    <span class="kit-option-name">${escapeHtml(kit.nome)}</span>
+                    <span class="kit-option-price">${formatMoney(kit.preco)}</span>
+                    <span class="kit-option-desc">${escapeHtml(kit.descricao || "")}</span>
+                </button>
+            `).join("");
+        }
+
+        function renderKitConfig() {
+            const kit = kits.find((k) => k.id === selectedKitId);
+
+            if (!kit) {
+                kitConfig.innerHTML = '<p class="empty-cart">Nenhum kit disponível no momento.</p>';
+                kitPrice.textContent = "";
+                kitProgress.textContent = "";
+                kitAddBtn.disabled = true;
+                kitWhatsappLink.classList.add("is-disabled");
+                kitWhatsappLink.href = "#";
+                return;
+            }
+
+            const staticInclusos = (kit.inclusos || [])
+                .filter((id) => !kit.escolhas.some((escolha) => escolha.de === "variacoes" && escolha.tipo === id))
+                .map((id) => projeto.itens.find((item) => item.id === id))
+                .filter(Boolean);
+
+            kitConfig.innerHTML = `
+                ${kit.escolhas.map((escolha, index) => {
+                    const info = getEscolhaCandidates(escolha);
+                    const count = getEscolhaCount(index, escolha);
+
+                    if (info.kind === "variacoes") {
+                        const selectedVariationId = selections[index];
+
+                        return `
+                            <div class="escolha-group">
+                                <div class="escolha-header">
+                                    <h3>${info.target ? escapeHtml(info.target.nome) : "Variação"}: escolha a cor</h3>
+                                    <span class="escolha-progress">${count}/${escolha.quantidade}</span>
+                                </div>
+                                ${info.target && info.target.descricao ? `<p class="escolha-desc">${escapeHtml(info.target.descricao)}</p>` : ""}
+                                <div class="variation-options" role="radiogroup">
+                                    ${info.options.map((v) => `
+                                        <label class="variation-option${selectedVariationId === v.id ? " active" : ""}">
+                                            <input type="radio" name="escolha-${index}" value="${escapeHtml(v.id)}" data-escolha-variation data-escolha-index="${index}" ${selectedVariationId === v.id ? "checked" : ""}>
+                                            <span>${escapeHtml(v.nome)} (${escapeHtml(v.cor)})</span>
+                                        </label>
+                                    `).join("")}
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    const remaining = escolha.quantidade - count;
+                    const picked = selections[index];
+
+                    return `
+                        <div class="escolha-group">
+                            <div class="escolha-header">
+                                <h3>Escolha ${escolha.quantidade} ${escapeHtml(formatEscolhaLabel(escolha.tipo))}</h3>
+                                <span class="escolha-progress">${count}/${escolha.quantidade}</span>
+                            </div>
+                            <div class="escolha-items">
+                                ${info.options.map((item) => {
+                                    const qty = picked instanceof Map ? (picked.get(item.id) || 0) : 0;
+                                    const image = normalizeImagePath(item.imagem);
+
+                                    return `
+                                        <div class="escolha-item">
+                                            <div class="escolha-item-media">
+                                                <img src="${escapeHtml(image)}" alt="${escapeHtml(item.nome)}">
+                                                <div class="product-image-fallback" aria-hidden="true"><i class="fa-solid fa-cube"></i></div>
+                                            </div>
+                                            <div class="escolha-item-info">
+                                                <strong>${escapeHtml(item.nome)}</strong>
+                                                ${item.obs ? `<span class="escolha-item-obs">${escapeHtml(item.obs)}</span>` : ""}
+                                            </div>
+                                            <div class="cart-actions escolha-item-stepper">
+                                                <button type="button" data-escolha-decrease data-escolha-index="${index}" data-item-id="${escapeHtml(item.id)}" ${qty <= 0 ? "disabled" : ""}><i class="fa-solid fa-minus"></i></button>
+                                                <strong>${qty}</strong>
+                                                <button type="button" data-escolha-increase data-escolha-index="${index}" data-item-id="${escapeHtml(item.id)}" ${remaining <= 0 ? "disabled" : ""}><i class="fa-solid fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join("")}
+                            </div>
+                        </div>
+                    `;
+                }).join("")}
+                ${staticInclusos.length ? `<p class="kit-inclusos"><i class="fa-solid fa-circle-check"></i> Inclui: ${staticInclusos.map((item) => escapeHtml(item.nome)).join(", ")}</p>` : ""}
+            `;
+
+            const complete = isKitComplete(kit);
+            const totalChosen = kit.escolhas.reduce((sum, escolha, index) => sum + Math.min(getEscolhaCount(index, escolha), escolha.quantidade), 0);
+            const totalNeeded = kit.escolhas.reduce((sum, escolha) => sum + escolha.quantidade, 0);
+
+            kitPrice.textContent = formatMoney(kit.preco);
+            kitProgress.textContent = complete ? "Kit completo!" : `Escolhidos ${totalChosen} de ${totalNeeded}`;
+            kitAddBtn.disabled = !complete;
+
+            if (complete) {
+                kitWhatsappLink.href = buildWhatsAppUrl(buildKitWhatsAppMessage(projeto, kit, selections));
+                kitWhatsappLink.classList.remove("is-disabled");
+            } else {
+                kitWhatsappLink.href = "#";
+                kitWhatsappLink.classList.add("is-disabled");
+            }
+        }
+
+        function selectKit(kitId) {
+            selectedKitId = kitId;
+            selections = {};
+            renderKitOptions();
+            renderKitConfig();
+        }
+
+        if (kits.length) {
+            kitOptions.addEventListener("click", (event) => {
+                const button = event.target.closest("[data-kit-option]");
+
+                if (!button) {
+                    return;
+                }
+
+                selectKit(button.dataset.kitId);
+            });
+
+            kitConfig.addEventListener("click", (event) => {
+                const increaseBtn = event.target.closest("[data-escolha-increase]");
+                const decreaseBtn = event.target.closest("[data-escolha-decrease]");
+                const button = increaseBtn || decreaseBtn;
+
+                if (!button) {
+                    return;
+                }
+
+                const index = Number(button.dataset.escolhaIndex);
+                const itemId = button.dataset.itemId;
+                const kit = kits.find((k) => k.id === selectedKitId);
+                const escolha = kit.escolhas[index];
+
+                if (!(selections[index] instanceof Map)) {
+                    selections[index] = new Map();
+                }
+
+                const map = selections[index];
+                const current = map.get(itemId) || 0;
+                const total = getEscolhaCount(index, escolha);
+
+                if (increaseBtn && total < escolha.quantidade) {
+                    map.set(itemId, current + 1);
+                } else if (decreaseBtn && current > 0) {
+                    const next = current - 1;
+
+                    if (next <= 0) {
+                        map.delete(itemId);
+                    } else {
+                        map.set(itemId, next);
+                    }
+                }
+
+                renderKitConfig();
+            });
+
+            kitConfig.addEventListener("change", (event) => {
+                const input = event.target.closest("[data-escolha-variation]");
+
+                if (!input) {
+                    return;
+                }
+
+                selections[Number(input.dataset.escolhaIndex)] = input.value;
+                renderKitConfig();
+            });
+
+            if (kitAddBtn) {
+                kitAddBtn.addEventListener("click", () => {
+                    const kit = kits.find((k) => k.id === selectedKitId);
+
+                    if (!kit || !isKitComplete(kit)) {
+                        return;
+                    }
+
+                    const variation = buildKitVariationSummary(projeto, kit, selections);
+                    const cartId = `${kit.id}::${createDomId(variation)}`;
+                    const displayName = `${kit.nome} - ${variation}`;
+
+                    const current = addLineToCartStorage(cartId, () => ({
+                        id: cartId,
+                        productId: kit.id,
+                        name: displayName,
+                        price: kit.preco,
+                        sku: kit.id,
+                        variation,
+                        note: "",
+                        quantity: 0,
+                    }));
+
+                    if (current) {
+                        showToast("Produto adicionado", `${kit.nome} no carrinho (${current.quantity} ${current.quantity === 1 ? "unidade" : "unidades"}).`);
+                    }
+
+                    kitAddBtn.innerHTML = '<i class="fa-solid fa-check"></i> Adicionado!';
+                    kitAddBtn.disabled = true;
+
+                    setTimeout(() => {
+                        kitAddBtn.innerHTML = '<i class="fa-solid fa-cart-plus"></i> Adicionar ao carrinho';
+                        kitAddBtn.disabled = !isKitComplete(kit);
+                    }, 2200);
+                });
+            }
+
+            renderKitOptions();
+            renderKitConfig();
+        } else {
+            kitConfig.innerHTML = '<p class="empty-cart">Nenhum kit disponível no momento.</p>';
+        }
+
+        const looseGrid = detail.querySelector("[data-loose-items-grid]");
+
+        if (looseGrid) {
+            looseGrid.innerHTML = looseItems.map((item) => renderLooseItemCard(item)).join("");
+
+            looseGrid.addEventListener("click", (event) => {
+                const button = event.target.closest("[data-loose-add-cart]");
+
+                if (!button) {
+                    return;
+                }
+
+                const card = button.closest("[data-loose-item]");
+                const item = looseItems.find((i) => i.id === card.dataset.itemId);
+
+                if (!item) {
+                    return;
+                }
+
+                const variationSelect = card.querySelector("[data-loose-variation]");
+                const variation = variationSelect ? variationSelect.value : "";
+                const cartId = variation ? `${projeto.id}-${item.id}::${variation}` : `${projeto.id}-${item.id}`;
+                const displayName = variation ? `${item.nome} - ${variation}` : item.nome;
+
+                const current = addLineToCartStorage(cartId, () => ({
+                    id: cartId,
+                    productId: item.id,
+                    name: displayName,
+                    price: item.preco,
+                    sku: item.id,
+                    variation,
+                    note: "",
+                    quantity: 0,
+                }));
+
+                if (current) {
+                    showToast("Produto adicionado", `${displayName} no carrinho (${current.quantity} ${current.quantity === 1 ? "unidade" : "unidades"}).`);
+                }
+            });
+
+            looseGrid.addEventListener("error", (event) => {
+                if (event.target.matches(".product-media img")) {
+                    event.target.classList.add("is-missing");
+                }
+            }, true);
+        }
+    } catch (error) {
+        detail.innerHTML = `
+            <article class="shop-card product-error">
+                <div class="product-symbol"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <h2>Erro ao carregar kit</h2>
+                <p>Confira se o arquivo projetos.json está disponível pelo servidor local.</p>
                 <a class="btn secondary" href="loja.html" style="margin-top: 8px">Ver loja</a>
             </article>
         `;
