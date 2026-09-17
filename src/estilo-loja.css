@@ -7,6 +7,11 @@
     margin: 44px auto 0;
 }
 
+.shop-products,
+.cart-panel {
+    min-width: 0;
+}
+
 .shop-heading {
     margin-bottom: 22px;
 }
