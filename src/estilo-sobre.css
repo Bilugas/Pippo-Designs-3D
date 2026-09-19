@@ -49,8 +49,17 @@
     place-items: center;
     border-radius: 8px;
     background: var(--soft-color);
-    color: var(--primary-color);
+    color: var(--pippo-coral);
     font-size: 1.45rem;
+    transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.about-grid article:nth-child(2) i { color: var(--pippo-marinho); }
+.about-grid article:nth-child(3) i { color: var(--pippo-pessego); }
+
+.about-grid article:hover i {
+    transform: scale(1.1);
+    filter: saturate(1.7) brightness(0.92);
 }
 
 .about-grid h2 {

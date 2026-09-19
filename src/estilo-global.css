@@ -13,6 +13,16 @@
     --footer-text-color: #ffffff;
     --shadow: 0 18px 42px rgba(31, 41, 51, 0.1);
     --font-family: "Lato", Arial, sans-serif;
+
+    /* Paleta oficial do logo, usada nos ícones do site */
+    --pippo-lilas: #BCADCC;
+    --pippo-pessego: #EFAE8A;
+    --pippo-rosa: #F4A9A6;
+    --pippo-azul: #B5BFDB;
+    --pippo-amarelo: #F1CC82;
+    --pippo-coral: #F3847F;
+    --pippo-marinho: #676D97;
+    --pippo-cinza: #78797A;
 }
 
 * {
@@ -109,6 +119,23 @@ nav ul li a.active {
     color: var(--primary-color);
 }
 
+nav ul li a i {
+    color: var(--pippo-marinho);
+    transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+nav ul li:nth-child(2) a i { color: var(--pippo-coral); }
+nav ul li:nth-child(3) a i { color: var(--pippo-lilas); }
+nav ul li:nth-child(4) a i { color: var(--pippo-pessego); }
+nav ul li:nth-child(5) a i { color: var(--pippo-rosa); }
+nav ul li:nth-child(6) a i { color: var(--pippo-marinho); }
+
+nav ul li a:hover i,
+nav ul li a.active i {
+    transform: scale(1.18);
+    filter: saturate(1.7) brightness(0.92);
+}
+
 .dropdown-content {
     display: none;
 }
@@ -199,10 +226,33 @@ h3 {
     border-color: var(--primary-color);
 }
 
+.btn i {
+    color: var(--pippo-amarelo);
+    transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.btn.secondary i {
+    color: var(--pippo-coral);
+}
+
+.btn:hover i {
+    transform: scale(1.18);
+    filter: saturate(1.7) brightness(0.95);
+}
+
 .text-link {
     color: var(--primary-color);
     font-weight: 900;
     text-decoration: none;
+}
+
+.text-link i {
+    color: var(--pippo-marinho);
+    transition: transform 0.25s ease;
+}
+
+.text-link:hover i {
+    transform: translateX(3px);
 }
 
 .whatsapp-float {
@@ -278,6 +328,10 @@ footer p {
     margin: 6px 0;
 }
 
+footer p i {
+    color: var(--pippo-coral);
+}
+
 footer .footer-links a {
     color: var(--footer-text-color);
     font-weight: 900;
@@ -289,14 +343,19 @@ footer .redes-sociais {
 }
 
 footer .redes-sociais a {
-    color: var(--footer-text-color);
+    display: inline-block;
+    color: var(--pippo-lilas);
     margin: 0 10px;
-    font-size: 1.35rem;
-    transition: color 0.2s ease;
+    font-size: 1.5rem;
+    transition: transform 0.25s ease, filter 0.25s ease;
 }
 
+footer .redes-sociais a:nth-child(2) { color: var(--pippo-pessego); }
+footer .redes-sociais a:nth-child(3) { color: var(--pippo-amarelo); }
+
 footer .redes-sociais a:hover {
-    color: var(--accent-color);
+    transform: scale(1.18);
+    filter: saturate(1.7) brightness(1.05);
 }
 
 @media (max-width: 768px) {
@@ -365,23 +424,25 @@ footer .redes-sociais a:hover {
         width: 100%;
         max-height: 0;
         display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 8px;
         overflow: hidden;
         padding: 0 12px;
         border-top: 1px solid transparent;
         opacity: 0;
         pointer-events: none;
-        transform: translateY(-6px);
-        transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+        transform: translateY(-6px) scale(0.96);
+        transform-origin: top center;
+        transition: max-height 0.25s ease, opacity 0.25s ease, padding 0.2s ease, transform 0.25s ease, border-color 0.2s ease;
     }
 
     .menu.active {
-        max-height: 420px;
-        padding: 4px 12px 12px;
+        max-height: 340px;
+        padding: 8px 12px 12px;
         border-top-color: var(--border-color);
         opacity: 1;
         pointer-events: auto;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 
     .menu li {
@@ -389,9 +450,14 @@ footer .redes-sociais a:hover {
     }
 
     nav ul li a {
-        min-height: 52px;
+        min-height: 72px;
+        flex-direction: column;
         justify-content: center;
-        padding: 13px 16px;
+        gap: 6px;
+        padding: 10px 6px;
+        font-size: 0.82rem;
+        line-height: 1.15;
+        text-align: center;
         border: 1px solid var(--border-color);
         border-radius: 8px;
         background: #ffffff;
@@ -561,6 +627,7 @@ body.lightbox-open {
 }
 
 .global-cart-badge i {
+    color: var(--pippo-coral);
     font-size: 1.1rem;
 }
 
@@ -620,12 +687,12 @@ textarea.is-valid {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.92);
-    color: var(--primary-color);
+    color: var(--pippo-marinho);
     font-size: 1rem;
     cursor: pointer;
     box-shadow: 0 10px 22px rgba(31, 41, 51, 0.12);
     backdrop-filter: blur(6px);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.25s ease, box-shadow 0.2s ease, filter 0.25s ease;
 }
 
 .scroll-to-top[hidden] {
@@ -663,7 +730,7 @@ textarea.is-valid {
     }
 
     nav ul li a {
-        padding: 13px 14px;
+        padding: 10px 6px;
     }
 
     .page-heading h1 {

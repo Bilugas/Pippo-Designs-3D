@@ -104,7 +104,7 @@
     position: absolute;
     left: 13px;
     bottom: 13px;
-    color: var(--muted-color);
+    color: var(--pippo-marinho);
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
     pointer-events: none;
@@ -154,6 +154,14 @@
 
 .filter-chip.all.active {
     background: var(--primary-color);
+    color: #ffffff;
+}
+
+.filter-chip i {
+    color: var(--pippo-marinho);
+}
+
+.filter-chip.all.active i {
     color: #ffffff;
 }
 
@@ -242,6 +250,7 @@
     place-items: center;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.72);
+    color: var(--pippo-marinho);
     box-shadow: 0 12px 26px rgba(31, 41, 51, 0.08);
 }
 
@@ -371,7 +380,7 @@
     place-items: center;
     border-radius: 8px;
     background: var(--soft-color);
-    color: var(--primary-color);
+    color: var(--pippo-coral);
     font-size: 1.5rem;
 }
 
@@ -426,6 +435,10 @@
     cursor: pointer;
 }
 
+.cart-clear i {
+    color: var(--pippo-marinho);
+}
+
 .cart-clear:hover {
     border-color: var(--secondary-color);
     color: var(--secondary-color);
@@ -474,8 +487,18 @@
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background: #ffffff;
-    color: var(--primary-color);
+    color: var(--pippo-marinho);
     cursor: pointer;
+    transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.cart-actions button:last-child {
+    color: var(--pippo-coral);
+}
+
+.cart-actions button:hover:not(:disabled) {
+    transform: scale(1.1);
+    filter: saturate(1.7) brightness(0.92);
 }
 
 .cart-note {
@@ -585,6 +608,10 @@
 
 .mobile-cart-shortcut strong {
     color: var(--accent-color);
+}
+
+.mobile-cart-shortcut i {
+    color: var(--pippo-coral);
 }
 
 .mobile-cart-shortcut[hidden] {

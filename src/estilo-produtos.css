@@ -21,8 +21,19 @@
     place-items: center;
     border-radius: 8px;
     background: var(--soft-color);
-    color: var(--primary-color);
+    color: var(--pippo-lilas);
     font-size: 1.4rem;
+    transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.catalog-section:nth-of-type(2) .category-heading i { color: var(--pippo-coral); }
+.catalog-section:nth-of-type(3) .category-heading i { color: var(--pippo-marinho); }
+.catalog-section:nth-of-type(4) .category-heading i { color: var(--pippo-pessego); }
+.catalog-section:nth-of-type(5) .category-heading i { color: var(--pippo-rosa); }
+
+.category-heading:hover i {
+    transform: scale(1.1);
+    filter: saturate(1.7) brightness(0.92);
 }
 
 .category-heading h2 {

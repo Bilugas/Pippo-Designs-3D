@@ -304,8 +304,17 @@ main {
 }
 
 .service-grid i {
-    color: var(--secondary-color);
+    color: var(--pippo-coral);
     font-size: 1.8rem;
+    transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.service-grid article:nth-child(2) i { color: var(--pippo-marinho); }
+.service-grid article:nth-child(3) i { color: var(--pippo-pessego); }
+
+.service-grid article:hover i {
+    transform: scale(1.15);
+    filter: saturate(1.7) brightness(0.92);
 }
 
 .service-grid h2,
@@ -424,7 +433,7 @@ main {
 }
 
 .faq-question i {
-    color: var(--secondary-color);
+    color: var(--pippo-marinho);
     transition: transform 0.2s ease;
 }
 

@@ -212,7 +212,7 @@
     inset: 0;
     display: none;
     place-items: center;
-    color: var(--primary-color);
+    color: var(--pippo-marinho);
     font-size: 1.1rem;
 }
 
@@ -283,7 +283,7 @@
 
 .kit-inclusos i {
     margin-right: 6px;
-    color: var(--primary-color);
+    color: var(--pippo-marinho);
 }
 
 .kit-summary {
