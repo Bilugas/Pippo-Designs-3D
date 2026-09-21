@@ -958,3 +958,26 @@
         white-space: nowrap;
     }
 }
+
+/* ── Mobile: áreas de toque de 44px ── */
+@media (max-width: 768px) {
+    .filter-chip,
+    .cart-clear,
+    .product-footer .btn,
+    .product-detail-link,
+    .product-variation-field select {
+        min-height: 44px;
+    }
+
+    .product-detail-link {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .cart-actions button,
+    .cart-actions button:last-child {
+        min-width: 44px;
+        width: 44px;
+        height: 44px;
+    }
+}

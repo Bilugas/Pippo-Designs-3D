@@ -266,7 +266,7 @@ h3 {
     gap: 10px;
     padding: 14px 18px;
     border-radius: 999px;
-    background: #25d366;
+    background: #0f8072;
     color: #ffffff;
     font-weight: 900;
     text-decoration: none;
@@ -343,9 +343,13 @@ footer .redes-sociais {
 }
 
 footer .redes-sociais a {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
     color: var(--pippo-lilas);
-    margin: 0 10px;
+    margin: 0 2px;
     font-size: 1.5rem;
     transition: transform 0.25s ease, filter 0.25s ease;
 }
@@ -511,7 +515,7 @@ footer .redes-sociais a:hover {
 
     footer {
         margin-top: 34px;
-        padding: 24px 16px calc(24px + env(safe-area-inset-bottom));
+        padding: 24px 16px calc(80px + env(safe-area-inset-bottom));
     }
 }
 
@@ -739,5 +743,20 @@ textarea.is-valid {
 
     .page-heading p {
         font-size: 0.98rem;
+    }
+}
+
+/* ── Mobile: flutuantes e áreas de toque de 44px ── */
+@media (max-width: 768px) {
+    .scroll-to-top {
+        display: none;
+    }
+
+    footer .footer-links a,
+    .contact-cards .text-link,
+    .featured .text-link {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
     }
 }

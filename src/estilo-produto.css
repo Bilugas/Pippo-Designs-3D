@@ -240,3 +240,14 @@
         margin-top: 20px;
     }
 }
+
+@media (max-width: 768px) {
+    .breadcrumb a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0 4px;
+    }
+}
