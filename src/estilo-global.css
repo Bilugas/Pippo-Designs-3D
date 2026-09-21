@@ -23,6 +23,12 @@
     --pippo-coral: #F3847F;
     --pippo-marinho: #676D97;
     --pippo-cinza: #78797A;
+
+    /* Versões mais escuras (contraste >= 3,4:1 em fundo claro) para ícones sobre branco */
+    --pippo-lilas-escuro: #9078ab;
+    --pippo-pessego-escuro: #d55f1d;
+    --pippo-rosa-escuro: #d9527a;
+    --pippo-coral-escuro: #ed433b;
 }
 
 * {
@@ -124,10 +130,10 @@ nav ul li a i {
     transition: transform 0.25s ease, filter 0.25s ease;
 }
 
-nav ul li:nth-child(2) a i { color: var(--pippo-coral); }
-nav ul li:nth-child(3) a i { color: var(--pippo-lilas); }
-nav ul li:nth-child(4) a i { color: var(--pippo-pessego); }
-nav ul li:nth-child(5) a i { color: var(--pippo-rosa); }
+nav ul li:nth-child(2) a i { color: var(--pippo-coral-escuro); }
+nav ul li:nth-child(3) a i { color: var(--pippo-lilas-escuro); }
+nav ul li:nth-child(4) a i { color: var(--pippo-pessego-escuro); }
+nav ul li:nth-child(5) a i { color: var(--pippo-rosa-escuro); }
 nav ul li:nth-child(6) a i { color: var(--pippo-marinho); }
 
 nav ul li a:hover i,
@@ -165,7 +171,7 @@ h3 {
 
 .eyebrow {
     display: inline-flex;
-    color: var(--secondary-color);
+    color: #c02a68;
     font-size: 0.78rem;
     font-weight: 900;
     letter-spacing: 0;
@@ -316,6 +322,16 @@ select:focus {
     border-color: var(--primary-color);
 }
 
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--pippo-marinho);
+    outline-offset: 3px;
+}
+
+footer a:focus-visible {
+    outline-color: var(--pippo-lilas);
+}
+
 footer {
     margin-top: 44px;
     padding: 28px 20px;
@@ -434,10 +450,11 @@ footer .redes-sociais a:hover {
         padding: 0 12px;
         border-top: 1px solid transparent;
         opacity: 0;
+        visibility: hidden;
         pointer-events: none;
         transform: translateY(-6px) scale(0.96);
         transform-origin: top center;
-        transition: max-height 0.25s ease, opacity 0.25s ease, padding 0.2s ease, transform 0.25s ease, border-color 0.2s ease;
+        transition: max-height 0.25s ease, opacity 0.25s ease, padding 0.2s ease, transform 0.25s ease, border-color 0.2s ease, visibility 0s linear 0.25s;
     }
 
     .menu.active {
@@ -445,8 +462,10 @@ footer .redes-sociais a:hover {
         padding: 8px 12px 12px;
         border-top-color: var(--border-color);
         opacity: 1;
+        visibility: visible;
         pointer-events: auto;
         transform: translateY(0) scale(1);
+        transition-delay: 0s;
     }
 
     .menu li {
