@@ -81,7 +81,7 @@ img {
     font-weight: 800;
 }
 
-nav {
+body > nav {
     position: sticky;
     top: 0;
     z-index: 10;
@@ -373,7 +373,7 @@ footer .redes-sociais a:hover {
         line-height: 1.35;
     }
 
-    nav {
+    body > nav {
         top: 0;
         padding: 0;
         box-shadow: 0 10px 24px rgba(31, 41, 51, 0.08);
