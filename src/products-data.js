@@ -8,6 +8,7 @@ window.PRODUCTS_DATA = [
     "preco": 50,
     "sku": "PD3D-COL-001",
     "imagem": "/produtos/dummy-13.webp",
+    "selo": "",
     "ativo": true,
     "sazonal": false,
     "destaque": true
@@ -21,6 +22,7 @@ window.PRODUCTS_DATA = [
     "preco": 280,
     "sku": "PD3D-PER-004",
     "imagem": "/produtos/blastoise.webp",
+    "selo": "",
     "ativo": true,
     "sazonal": false,
     "destaque": true
@@ -34,6 +36,7 @@ window.PRODUCTS_DATA = [
     "preco": 70,
     "sku": "PD3D-PER-011",
     "imagem": "/produtos/naruto.webp",
+    "selo": "",
     "ativo": true
   },
   {
@@ -45,6 +48,7 @@ window.PRODUCTS_DATA = [
     "preco": 40,
     "sku": "PD3D-CUBO-ENGRENAGEM",
     "imagem": "/produtos/cubo-engrenagem.webp",
+    "selo": "",
     "ativo": true
   },
   {
@@ -56,6 +60,7 @@ window.PRODUCTS_DATA = [
     "preco": 30,
     "sku": "PD3D-CUBOGAMI",
     "imagem": "/produtos/cubogami.webp",
+    "selo": "",
     "ativo": true
   },
   {
@@ -67,6 +72,7 @@ window.PRODUCTS_DATA = [
     "preco": 35,
     "sku": "PD3D-JOGO-DA-FORCA",
     "imagem": "/produtos/jogo-da-forca.webp",
+    "selo": "",
     "ativo": true
   },
   {
@@ -78,6 +84,7 @@ window.PRODUCTS_DATA = [
     "preco": 70,
     "sku": "PD3D-PATOLINO-SHOPPING",
     "imagem": "/produtos/patolino-shopping.webp",
+    "selo": "",
     "ativo": true
   }
 ];

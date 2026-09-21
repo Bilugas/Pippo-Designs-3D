@@ -215,6 +215,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setupProductCatalog();
     setupFeaturedProducts();
+    setupHeroCarousel();
+    setupReveal();
     setupProjectsCatalog();
     setupCatalogLooseItems();
     setupCart();
@@ -253,6 +255,17 @@ async function setupProductCatalog() {
         products = sortCatalogProducts(data);
 
         populateFilters(products, categoryFilter, typeFilter);
+
+        const params = new URLSearchParams(window.location.search);
+        const hasUrlFilter = [
+            applyUrlFilter(params.get("categoria"), categoryFilter, filters, "category"),
+            applyUrlFilter(params.get("tipo"), typeFilter, filters, "type"),
+        ].some(Boolean);
+
+        if (hasUrlFilter) {
+            requestAnimationFrame(() => categoryFilter.closest(".shop-toolbar")?.scrollIntoView({ block: "start" }));
+        }
+
         populateFilterChips(products, filterChips);
         renderProducts(products, filters, grid, productsCount);
         updateFilterChipState(filterChips, filters);
@@ -426,7 +439,9 @@ function renderProducts(products, filters, grid, productsCount) {
     requestAnimationFrame(() => grid.classList.add("product-grid-loaded"));
 }
 
-function renderProductCard(product, action = "cart") {
+function renderProductCard(product, action = "cart", options = {}) {
+    const addLabel = options.addLabel || (action === "cart" ? "Adicionar" : "Comprar");
+    const seal = String(product.selo || "").trim();
     const category = getProductCategory(product);
     const type = getProductType(product);
     const image = normalizeImagePath(product.imagem);
@@ -464,7 +479,7 @@ function renderProductCard(product, action = "cart") {
                 data-sku="${escapeHtml(product.sku || product.id)}"
             >
                 <i class="fa-solid fa-cart-plus"></i>
-                Comprar
+                ${escapeHtml(addLabel)}
             </button>
         `;
 
@@ -472,6 +487,7 @@ function renderProductCard(product, action = "cart") {
         <article class="shop-card ${product.destaque ? "featured" : ""}" data-product-card>
             <div class="product-media ${escapeHtml(placeholderClasses)}" data-lightbox data-lightbox-src="${escapeHtml(image)}" data-lightbox-name="${escapeHtml(product.nome)}">
                 ${product.destaque ? '<span class="featured-badge"><i class="fa-solid fa-star"></i> Destaque</span>' : ""}
+                ${seal ? `<span class="selo selo--${escapeHtml(createDomId(seal))}">${escapeHtml(seal)}</span>` : ""}
                 <img src="${escapeHtml(image)}" alt="${escapeHtml(product.nome)}" loading="lazy">
                 <div class="product-image-fallback" aria-hidden="true"><i class="fa-solid ${escapeHtml(iconClass)}"></i></div>
             </div>
@@ -497,6 +513,8 @@ function renderProductCard(product, action = "cart") {
     `;
 }
 
+const HOME_PRODUCTS_LIMIT = 6;
+
 async function setupFeaturedProducts() {
     const grid = document.querySelector("[data-featured-products]");
 
@@ -506,36 +524,261 @@ async function setupFeaturedProducts() {
 
     try {
         const data = await loadProductsData();
-        const featuredProducts = sortCatalogProducts(data)
-            .filter((product) => product.destaque)
-            .slice(0, 6);
+        const homeProducts = data
+            .filter((product) => product.ativo !== false)
+            .sort((first, second) => {
+                const featuredOrder = Number(Boolean(second.destaque)) - Number(Boolean(first.destaque));
 
-        if (!featuredProducts.length) {
+                return featuredOrder !== 0
+                    ? featuredOrder
+                    : Number(Boolean(second.selo)) - Number(Boolean(first.selo));
+            })
+            .slice(0, HOME_PRODUCTS_LIMIT);
+
+        if (!homeProducts.length) {
             grid.innerHTML = `
                 <article class="shop-card product-empty">
                     <div class="product-symbol"><i class="fa-solid fa-star"></i></div>
-                    <h2>Nenhum destaque ativo</h2>
-                    <p>Marque produtos com destaque = true no products.json.</p>
+                    <h2>Nenhum produto ativo</h2>
+                    <p>Cadastre produtos no products.json.</p>
                 </article>
             `;
             return;
         }
 
-        grid.innerHTML = featuredProducts.map((product) => renderProductCard(product, "whatsapp")).join("");
+        grid.innerHTML = homeProducts.map((product) => renderProductCard(product, "cart", { addLabel: "Adicionar" })).join("");
         requestAnimationFrame(() => grid.classList.add("product-grid-loaded"));
         grid.addEventListener("error", (event) => {
             if (event.target.matches(".product-media img")) {
                 event.target.classList.add("is-missing");
             }
         }, true);
+        grid.addEventListener("click", (event) => {
+            const button = event.target.closest("[data-add-cart]");
+
+            if (button) {
+                addProductToStoredCart(button);
+            }
+        });
     } catch (error) {
         grid.innerHTML = `
             <article class="shop-card product-error">
                 <div class="product-symbol"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                <h2>Destaques indisponíveis</h2>
+                <h2>Produtos indisponíveis</h2>
                 <p>Confira se o arquivo products.json está disponível pelo servidor local.</p>
             </article>
         `;
+        console.error(error);
+    }
+}
+
+function addProductToStoredCart(button) {
+    const id = button.dataset.id || button.dataset.name;
+    const name = button.dataset.name;
+    const card = button.closest("[data-product-card]");
+    const variationSelect = card ? card.querySelector("[data-product-variation]") : null;
+    const variation = variationSelect ? variationSelect.value : "";
+    const cartId = variation ? `${id}::${variation}` : id;
+    const displayName = variation ? `${name} - ${variation}` : name;
+
+    try {
+        const saved = JSON.parse(localStorage.getItem(cartStorageKey) || "[]");
+        const cart = new Map(Array.isArray(saved) ? saved.map((item) => [item.id, item]) : []);
+        const current = cart.get(cartId) || {
+            id: cartId,
+            productId: id,
+            name: displayName,
+            price: Number(button.dataset.price),
+            sku: button.dataset.sku || id,
+            variation,
+            note: "",
+            quantity: 0,
+        };
+
+        current.quantity += 1;
+        cart.set(cartId, current);
+        localStorage.setItem(cartStorageKey, JSON.stringify(Array.from(cart.values())));
+        window.dispatchEvent(new Event("pippo-cart-updated"));
+        showToast("Produto adicionado", `${displayName} no carrinho (${current.quantity} ${current.quantity === 1 ? "unidade" : "unidades"}).`);
+    } catch {
+        // ignora erros do localStorage
+        return;
+    }
+
+    const originalHtml = button.innerHTML;
+    button.innerHTML = '<i class="fa-solid fa-check"></i> Adicionado!';
+    button.disabled = true;
+
+    setTimeout(() => {
+        button.innerHTML = originalHtml;
+        button.disabled = false;
+    }, 1800);
+}
+
+function setupHeroCarousel() {
+    const carousel = document.querySelector("[data-carousel]");
+
+    if (!carousel) {
+        return;
+    }
+
+    const track = carousel.querySelector("[data-carousel-track]");
+    const slides = Array.from(track.children);
+    const dots = Array.from(carousel.querySelectorAll("[data-carousel-dot]"));
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let index = 0;
+    let timer = null;
+
+    function updateDots() {
+        dots.forEach((dot, dotIndex) => {
+            dot.classList.toggle("active", dotIndex === index);
+            dot.setAttribute("aria-current", dotIndex === index ? "true" : "false");
+        });
+    }
+
+    function goTo(target, smooth = true) {
+        index = (target + slides.length) % slides.length;
+        track.scrollTo({ left: index * track.clientWidth, behavior: smooth && !reduceMotion ? "smooth" : "auto" });
+        updateDots();
+    }
+
+    function stop() {
+        clearInterval(timer);
+        timer = null;
+    }
+
+    function start() {
+        if (reduceMotion || timer || document.hidden) {
+            return;
+        }
+
+        timer = setInterval(() => goTo(index + 1), 4000);
+    }
+
+    track.addEventListener("scroll", () => {
+        const current = Math.round(track.scrollLeft / track.clientWidth);
+
+        if (current !== index && current >= 0 && current < slides.length) {
+            index = current;
+            updateDots();
+        }
+    }, { passive: true });
+
+    carousel.querySelector("[data-carousel-prev]").addEventListener("click", () => {
+        goTo(index - 1);
+        stop();
+        start();
+    });
+
+    carousel.querySelector("[data-carousel-next]").addEventListener("click", () => {
+        goTo(index + 1);
+        stop();
+        start();
+    });
+
+    dots.forEach((dot, dotIndex) => {
+        dot.addEventListener("click", () => {
+            goTo(dotIndex);
+            stop();
+            start();
+        });
+    });
+
+    ["mouseenter", "focusin", "touchstart"].forEach((eventName) => carousel.addEventListener(eventName, stop, { passive: true }));
+    ["mouseleave", "focusout", "touchend"].forEach((eventName) => carousel.addEventListener(eventName, start, { passive: true }));
+    document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
+    window.addEventListener("resize", () => goTo(index, false));
+
+    updateDots();
+    start();
+}
+
+function setupReveal() {
+    const items = document.querySelectorAll("[data-reveal]");
+
+    if (!items.length) {
+        return;
+    }
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+        items.forEach((item) => item.classList.add("is-visible"));
+        return;
+    }
+
+    document.documentElement.classList.add("js-reveal");
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: "0px 0px -5% 0px" });
+
+    items.forEach((item) => observer.observe(item));
+}
+
+function applyUrlFilter(rawValue, select, filters, key) {
+    if (!rawValue) {
+        return false;
+    }
+
+    const wanted = createDomId(rawValue);
+    const option = Array.from(select.options).find((item) => item.value && createDomId(item.value) === wanted);
+
+    if (!option) {
+        return false;
+    }
+
+    select.value = option.value;
+    filters[key] = option.value;
+
+    return true;
+}
+
+async function setupRelatedProducts(current) {
+    const section = document.querySelector("[data-related-section]");
+    const grid = document.querySelector("[data-related-grid]");
+
+    if (!section || !grid) {
+        return;
+    }
+
+    try {
+        const data = await loadProductsData();
+        const affinity = (product) => (current
+            ? Number(getProductCategory(product) === getProductCategory(current)) * 2 + Number(getProductType(product) === getProductType(current))
+            : 0);
+        const picks = data
+            .filter((product) => product.ativo !== false && (!current || product.id !== current.id))
+            .map((product, index) => ({ product, index, score: affinity(product) }))
+            .sort((first, second) => second.score - first.score || first.index - second.index)
+            .slice(0, 4)
+            .map((item) => item.product);
+
+        if (!picks.length) {
+            return;
+        }
+
+        grid.innerHTML = picks.map((product) => renderProductCard(product, "cart")).join("");
+        grid.classList.add("product-grid-loaded");
+        grid.addEventListener("error", (event) => {
+            if (event.target.matches(".product-media img")) {
+                event.target.classList.add("is-missing");
+            }
+        }, true);
+        grid.addEventListener("click", (event) => {
+            const button = event.target.closest("[data-add-cart]");
+
+            if (button) {
+                addProductToStoredCart(button);
+            }
+        });
+        section.hidden = false;
+    } catch (error) {
         console.error(error);
     }
 }
@@ -1156,6 +1399,7 @@ function setupGlobalCartBadge() {
 
     update();
     window.addEventListener("storage", update);
+    window.addEventListener("pippo-cart-updated", update);
 }
 
 async function setupProductDetail() {
@@ -1255,6 +1499,8 @@ async function setupProductDetail() {
         if (img) {
             img.addEventListener("error", () => img.classList.add("is-missing"));
         }
+
+        setupRelatedProducts(product);
 
         const addCartBtn = detail.querySelector("[data-detail-add-cart]");
 
@@ -1472,6 +1718,7 @@ async function setupProjetoDetail() {
             ? projeto.imagens
             : [projeto.capa].filter(Boolean);
         const placeholderClasses = `product-placeholder-${createDomId(projeto.categoria || "kit")}`;
+        const startingPrice = getProjetoStartingPrice(projeto);
         const looseItems = projeto.itens.filter((item) => item.avulso && item.ativo !== false && item.preco != null);
 
         detail.innerHTML = `
@@ -1496,11 +1743,15 @@ async function setupProjetoDetail() {
                     ${projeto.publico ? `<span class="product-tag">${escapeHtml(projeto.publico)}</span>` : ""}
                 </div>
                 <h1 class="project-title">${escapeHtml(projeto.titulo)}</h1>
+                <div class="project-cta">
+                    ${startingPrice !== null ? `<strong class="product-detail-price">A partir de ${formatMoney(startingPrice)}</strong>` : ""}
+                    <a class="btn primary" href="#kit-builder"><i class="fa-solid fa-sliders"></i> Montar kit</a>
+                </div>
                 <p class="project-summary">${escapeHtml(projeto.resumo || "")}</p>
                 ${projeto.detalhes ? `<p class="project-details-text">${escapeHtml(projeto.detalhes)}</p>` : ""}
             </div>
 
-            <section class="kit-builder" aria-labelledby="kit-builder-title">
+            <section class="kit-builder" id="kit-builder" aria-labelledby="kit-builder-title">
                 <h2 id="kit-builder-title">Monte seu kit</h2>
                 <div class="kit-options" data-kit-options role="tablist"></div>
                 <div class="kit-config" data-kit-config></div>
@@ -1528,6 +1779,8 @@ async function setupProjetoDetail() {
                 <i class="fa-solid fa-arrow-left"></i> Voltar para a loja
             </a>
         `;
+
+        setupRelatedProducts(null);
 
         const mainImg = detail.querySelector("[data-gallery-image]");
 

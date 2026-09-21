@@ -75,91 +75,206 @@
     </nav>
 
     <main id="main-content">
-        <section class="hero">
-            <div class="hero-content">
-                <span class="eyebrow">Pippo Designs 3D</span>
-                <h1>Peças impressas em 3D para vender, presentear e resolver pequenas ideias do dia a dia.</h1>
-                <p>Produtos prontos, lembrancinhas, chaveiros, organizadores e projetos personalizados com pedido simples pelo carrinho.</p>
-                <div class="hero-actions">
-                    <a class="btn primary" href="loja.html"><i class="fa-solid fa-cart-shopping"></i> Comprar agora</a>
-                    <a class="btn secondary" href="contato.html"><i class="fa-brands fa-whatsapp"></i> Pedir orçamento</a>
-                </div>
-            </div>
-            <div class="printer-stage" aria-label="Logo da Pippo Designs 3D sendo impressa em 3D">
-                <div class="printer-frame logo-printer-frame">
-                    <div class="printer-rail"></div>
-                    <div class="printer-head"></div>
-                    <div class="logo-print-area">
-                        <div class="logo-print-surface"></div>
-                        <div class="logo-print-reveal">
-                            <div class="logo-print-layers"></div>
-                            <img src="src/img/pippo-designs-3d-logo.png" alt="Logo da Pippo Designs 3D">
-                        </div>
+        <div class="secao secao--topo">
+            <section class="hero conteudo" aria-labelledby="hero-title">
+                <div class="hero-content">
+                    <h1 id="hero-title">Seus personagens favoritos em 3D</h1>
+                    <p>Colecionáveis, articulados e peças personalizadas feitas em Santa Isabel - SP</p>
+                    <div class="hero-actions">
+                        <a class="btn primary" href="loja.html"><i class="fa-solid fa-cart-shopping"></i> Ver loja</a>
+                        <a class="btn secondary" href="https://wa.me/5511987550497?text=Ol%C3%A1!%20Vi%20o%20site%20da%20Pippo%20Designs%203D%20e%20quero%20encomendar%20o%20meu%20personagem%20em%203D." target="_blank" rel="noreferrer"><i class="fa-brands fa-whatsapp"></i> Encomendar o meu</a>
                     </div>
-                    <div class="printer-bed"></div>
                 </div>
-            </div>
-        </section>
 
-        <section class="service-grid" aria-label="Serviços principais">
-            <article>
-                <i class="fa-solid fa-gift"></i>
-                <h2>Presentes criativos</h2>
-                <p>Chaveiros, miniaturas, placas, tags e lembrancinhas feitas sob encomenda.</p>
-            </article>
-            <article>
-                <i class="fa-solid fa-ruler-combined"></i>
-                <h2>Sob medida</h2>
-                <p>Envie sua ideia, medida ou referência para receber uma proposta personalizada.</p>
-            </article>
-            <article>
-                <i class="fa-solid fa-palette"></i>
-                <h2>Cores e acabamento</h2>
-                <p>Escolha cor, quantidade, nome gravado e observações antes de finalizar.</p>
-            </article>
-        </section>
+                <div class="hero-carousel" data-carousel role="group" aria-roledescription="carrossel" aria-label="Produtos em destaque">
+                    <div class="carousel-track" data-carousel-track>
+                        <a class="carousel-slide" href="produto.html?id=blastoise" aria-label="Ver Blastoise">
+                            <img src="produtos/blastoise.webp" alt="Blastoise impresso em 3D" width="800" height="1067" fetchpriority="high" style="object-position: 50% 32%">
+                        </a>
+                        <a class="carousel-slide" href="produto.html?id=dummy-13" aria-label="Ver Dummy 13">
+                            <img src="produtos/dummy-13.webp" alt="Dummy 13, figura articulada impressa em 3D" width="800" height="1067" loading="lazy" style="object-position: 50% 40%">
+                        </a>
+                        <a class="carousel-slide" href="produto.html?id=naruto" aria-label="Ver Naruto">
+                            <img src="produtos/naruto.webp" alt="Naruto impresso em 3D" width="800" height="1067" loading="lazy" style="object-position: 50% 30%">
+                        </a>
+                        <a class="carousel-slide" href="produto.html?id=patolino-shopping" aria-label="Ver Patolino (Calça de Shopping)">
+                            <img src="produtos/patolino-shopping.webp" alt="Patolino com calça de shopping impresso em 3D" width="800" height="1351" loading="lazy" style="object-position: 50% 28%">
+                        </a>
+                    </div>
+                    <button class="carousel-btn carousel-prev" type="button" aria-label="Foto anterior" data-carousel-prev><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="carousel-btn carousel-next" type="button" aria-label="Próxima foto" data-carousel-next><i class="fa-solid fa-chevron-right"></i></button>
+                    <div class="carousel-dots">
+                        <button class="carousel-dot active" type="button" aria-label="Ir para a foto 1" data-carousel-dot></button>
+                        <button class="carousel-dot" type="button" aria-label="Ir para a foto 2" data-carousel-dot></button>
+                        <button class="carousel-dot" type="button" aria-label="Ir para a foto 3" data-carousel-dot></button>
+                        <button class="carousel-dot" type="button" aria-label="Ir para a foto 4" data-carousel-dot></button>
+                    </div>
+                </div>
+            </section>
+        </div>
 
-        <section class="split-section">
-            <div>
-                <span class="eyebrow">Como funciona</span>
-                <h2>Do pedido ao produto pronto em poucos passos.</h2>
-            </div>
-            <div class="steps">
-                <article>
-                    <strong>1</strong>
-                    <h3>Escolha ou envie a ideia</h3>
-                    <p>Compre um item da loja ou solicite uma peça exclusiva.</p>
+        <div class="secao revelar" data-reveal>
+            <section class="conteudo" aria-labelledby="cat-title">
+                <div class="secao-titulo">
+                    <span class="eyebrow">Categorias</span>
+                    <h2 id="cat-title">Escolha por categoria</h2>
+                </div>
+                <ul class="cat-grid">
+                    <li>
+                        <a class="cat-card card" href="loja.html?categoria=geek-premium">
+                            <img src="produtos/blastoise.webp" alt="" loading="lazy" style="object-position: 50% 32%">
+                            <span class="cat-label">Geek Premium<small>Ver produtos <i class="fa-solid fa-arrow-right"></i></small></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="cat-card card" href="loja.html?categoria=colecionavel">
+                            <img src="produtos/dummy-13.webp" alt="" loading="lazy" style="object-position: 50% 40%">
+                            <span class="cat-label">Colecionáveis<small>Ver produtos <i class="fa-solid fa-arrow-right"></i></small></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="cat-card card" href="loja.html?categoria=sensorial">
+                            <img src="produtos/cubogami.webp" alt="" loading="lazy" class="cat-zoom">
+                            <span class="cat-label">Sensoriais<small>Ver produtos <i class="fa-solid fa-arrow-right"></i></small></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="cat-card card" href="loja.html?categoria=educativo">
+                            <img src="produtos/jogo-da-forca.webp" alt="" loading="lazy" style="object-position: 50% 45%">
+                            <span class="cat-label">Educativos<small>Ver produtos <i class="fa-solid fa-arrow-right"></i></small></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="cat-card card" href="projeto.html?id=kit-frutas-legumes">
+                            <img src="assets/img/produtos/kit-completo-01.webp" alt="" loading="lazy">
+                            <span class="cat-label">Kit de Frutas<small>Montar o meu <i class="fa-solid fa-arrow-right"></i></small></span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="secao secao--azul revelar" data-reveal>
+            <section class="conteudo" aria-labelledby="best-title">
+                <div class="secao-titulo">
+                    <span class="eyebrow">Loja</span>
+                    <h2 id="best-title">Mais vendidos</h2>
+                </div>
+                <div class="product-grid home-featured-grid" data-featured-products aria-live="polite">
+                    <article class="shop-card product-loading">
+                        <div class="product-symbol"><i class="fa-solid fa-spinner"></i></div>
+                        <h2>Carregando destaques</h2>
+                        <p>Buscando produtos marcados como destaque no catálogo.</p>
+                    </article>
+                </div>
+                <div class="secao-cta">
+                    <a class="btn primary" href="loja.html"><i class="fa-solid fa-store"></i> Ver todos os produtos</a>
+                </div>
+            </section>
+        </div>
+
+        <div class="faixa-cta revelar" data-reveal>
+            <section class="faixa-cta__conteudo conteudo" aria-labelledby="promo-title">
+                <h2 id="promo-title">Quer um personagem que não está aqui? A gente faz!</h2>
+                <a class="btn primary" href="https://wa.me/5511987550497?text=Ol%C3%A1!%20Vi%20o%20site%20da%20Pippo%20Designs%203D%20e%20quero%20pedir%20um%20personagem%20que%20n%C3%A3o%20est%C3%A1%20na%20loja." target="_blank" rel="noreferrer"><i class="fa-brands fa-whatsapp"></i> Pedir o meu personagem</a>
+            </section>
+        </div>
+
+        <div class="secao secao--pessego revelar" data-reveal>
+            <section class="conteudo fair-section" aria-labelledby="fair-title">
+                <div class="secao-titulo">
+                    <span class="eyebrow">Venha nos conhecer</span>
+                    <h2 id="fair-title">Toda sexta na Feira Noturna de Santa Isabel</h2>
+                    <p>Passe por lá, veja as peças de perto e converse com a gente.</p>
+                </div>
+                <ul class="fair-facts">
+                    <li><i class="fa-solid fa-calendar-day"></i> Toda sexta</li>
+                    <li><i class="fa-solid fa-moon"></i> Feira Noturna</li>
+                    <li><i class="fa-solid fa-location-dot"></i> Praça da Bandeira, Santa Isabel - SP</li>
+                </ul>
+
+                <!--
+                    FOTOS DA FEIRA (3 fotos): para usar, apague as marcas de comentário deste bloco,
+                    salve as fotos em assets/img/feira/ (de preferência em WebP, ~800px de largura)
+                    e troque os nomes em src e o texto em alt.
+
+                <div class="fair-photos">
+                    <figure><img src="assets/img/feira/feira-1.webp" alt="Descreva a foto 1 da feira" loading="lazy"></figure>
+                    <figure><img src="assets/img/feira/feira-2.webp" alt="Descreva a foto 2 da feira" loading="lazy"></figure>
+                    <figure><img src="assets/img/feira/feira-3.webp" alt="Descreva a foto 3 da feira" loading="lazy"></figure>
+                </div>
+                -->
+
+                <!--
+                    DEPOIMENTOS (3 depoimentos): para usar, apague as marcas de comentário deste bloco
+                    e troque o texto e o nome de cada cliente (com autorização deles).
+
+                <div class="testimonials">
+                    <blockquote class="testimonial card">
+                        <p>“Escreva aqui o depoimento 1.”</p>
+                        <footer>Nome do cliente</footer>
+                    </blockquote>
+                    <blockquote class="testimonial card">
+                        <p>“Escreva aqui o depoimento 2.”</p>
+                        <footer>Nome do cliente</footer>
+                    </blockquote>
+                    <blockquote class="testimonial card">
+                        <p>“Escreva aqui o depoimento 3.”</p>
+                        <footer>Nome do cliente</footer>
+                    </blockquote>
+                </div>
+                -->
+            </section>
+        </div>
+
+        <div class="secao revelar" data-reveal>
+            <section class="service-grid conteudo" aria-label="Serviços principais">
+                <article class="card">
+                    <i class="fa-solid fa-gift"></i>
+                    <h2>Presentes criativos</h2>
+                    <p>Chaveiros, miniaturas, placas, tags e lembrancinhas feitas sob encomenda.</p>
                 </article>
-                <article>
-                    <strong>2</strong>
-                    <h3>Confirme detalhes</h3>
-                    <p>Ajustamos cor, tamanho, nome, quantidade e prazo.</p>
+                <article class="card">
+                    <i class="fa-solid fa-ruler-combined"></i>
+                    <h2>Sob medida</h2>
+                    <p>Envie sua ideia, medida ou referência para receber uma proposta personalizada.</p>
                 </article>
-                <article>
-                    <strong>3</strong>
-                    <h3>Receba seu pedido</h3>
-                    <p>Retirada ou envio combinado após a confirmação.</p>
+                <article class="card">
+                    <i class="fa-solid fa-palette"></i>
+                    <h2>Cores e acabamento</h2>
+                    <p>Escolha cor, quantidade, nome gravado e observações antes de finalizar.</p>
                 </article>
-            </div>
-        </section>
+            </section>
+        </div>
 
-        <section class="featured">
-            <div>
-                <span class="eyebrow">Destaques</span>
-                <h2>Produtos em destaque no catálogo</h2>
-            </div>
-            <a href="loja.html" class="text-link">Ver loja <i class="fa-solid fa-arrow-right"></i></a>
-        </section>
+        <div class="secao secao--lilas revelar" data-reveal>
+            <section class="split-section conteudo">
+                <div>
+                    <span class="eyebrow">Como funciona</span>
+                    <h2>Do pedido ao produto pronto em poucos passos.</h2>
+                </div>
+                <div class="steps">
+                    <article class="card">
+                        <strong>1</strong>
+                        <h3>Escolha ou envie a ideia</h3>
+                        <p>Compre um item da loja ou solicite uma peça exclusiva.</p>
+                    </article>
+                    <article class="card">
+                        <strong>2</strong>
+                        <h3>Confirme detalhes</h3>
+                        <p>Ajustamos cor, tamanho, nome, quantidade e prazo.</p>
+                    </article>
+                    <article class="card">
+                        <strong>3</strong>
+                        <h3>Receba seu pedido</h3>
+                        <p>Retirada ou envio combinado após a confirmação.</p>
+                    </article>
+                </div>
+            </section>
+        </div>
 
-        <section class="product-grid home-featured-grid" data-featured-products aria-live="polite">
-            <article class="shop-card product-loading">
-                <div class="product-symbol"><i class="fa-solid fa-spinner"></i></div>
-                <h2>Carregando destaques</h2>
-                <p>Buscando produtos marcados como destaque no catálogo.</p>
-            </article>
-        </section>
-
-        <section class="faq-section" aria-labelledby="faq-title">
+        <div class="secao secao--azul revelar" data-reveal>
+            <section class="faq-section conteudo" aria-labelledby="faq-title">
             <div class="faq-heading">
                 <span class="eyebrow">Dúvidas frequentes</span>
                 <h2 id="faq-title">Antes de pedir sua peça 3D</h2>
@@ -208,6 +323,7 @@
                 </article>
             </div>
         </section>
+        </div>
     </main>
 
     <a class="whatsapp-float" href="https://wa.me/5511987550497?text=Ol%C3%A1%2C%20Pippo%20Designs%203D!%20Quero%20fazer%20um%20or%C3%A7amento." target="_blank" rel="noreferrer" aria-label="Falar com a Pippo Designs 3D no WhatsApp">
@@ -217,8 +333,8 @@
 
     <footer>
         <p>&copy; 2026 Pippo Designs 3D. Todos os direitos reservados.</p>
-        <p>Gabriel Pimentel da Silva | CNPJ 65.538.268/0001-27 | Santa Isabel - SP</p>
-        <p><i class="fa-solid fa-phone"></i> +55 11 98755-0497 | <i class="fa-solid fa-envelope"></i> pippodesigns@icloud.com</p>
+        <p>Pippo Designs 3D · CNPJ 65.538.268/0001-27</p>
+        <p><i class="fa-solid fa-location-dot"></i> Santa Isabel - SP | <i class="fa-solid fa-phone"></i> +55 11 98755-0497 | <i class="fa-solid fa-envelope"></i> pippodesigns@icloud.com</p>
         <p class="footer-links"><a href="politica.html">Política de Privacidade e Trocas</a></p>
         <div class="redes-sociais">
             <a href="https://www.instagram.com/pippodesings3d/" target="_blank" rel="noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>

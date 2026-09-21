@@ -50,6 +50,12 @@
 }
 
 /* ── Informações ── */
+.project-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
 .project-title {
     margin: 0;
     color: var(--primary-dark);
@@ -72,11 +78,12 @@
 
 /* ── Montador de kit ── */
 .kit-builder {
+    scroll-margin-top: 84px;
     padding: 20px;
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 14px;
     background: #ffffff;
-    box-shadow: 0 12px 28px rgba(31, 41, 51, 0.06);
+    box-shadow: var(--card-shadow);
 }
 
 .kit-builder h2 {
@@ -383,5 +390,22 @@
     .escolha-item-stepper {
         grid-column: 1 / -1;
         justify-content: flex-end;
+    }
+}
+
+.project-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 18px;
+}
+
+@media (max-width: 620px) {
+    .project-cta {
+        gap: 8px;
+    }
+
+    .project-cta .btn {
+        width: 100%;
     }
 }

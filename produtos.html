@@ -53,161 +53,173 @@
         </ul>
     </nav>
 
-    <main class="catalog-page" id="main-content">
-        <section class="page-heading">
-            <span class="eyebrow">Catálogo</span>
-            <h1>Opções para criar, personalizar e vender.</h1>
-            <p>Use este catálogo como ponto de partida. Cada item pode receber ajuste de cor, tamanho, nome, quantidade e acabamento.</p>
-        </section>
-
-        <section class="catalog-section">
-            <div class="category-heading">
-                <i class="fa-solid fa-boxes-stacked"></i>
-                <div>
-                    <h2>Peças avulsas</h2>
-                    <p>Itens vendidos separadamente, fora dos kits. Para montar um kit completo, visite a loja.</p>
-                </div>
-            </div>
-            <div class="product-grid loose-items-grid" data-catalog-items-grid aria-live="polite">
-                <article class="shop-card product-loading">
-                    <div class="product-symbol"><i class="fa-solid fa-spinner"></i></div>
-                    <h2>Carregando itens</h2>
-                    <p>Buscando os itens do arquivo projetos.json.</p>
-                </article>
-            </div>
-        </section>
-
-        <section class="catalog-section product-catalog-section">
-            <div class="category-heading">
-                <i class="fa-solid fa-store"></i>
-                <div>
-                    <h2>Produtos disponíveis</h2>
-                    <p>Itens carregados do arquivo products.json. Use os filtros para encontrar a linha ou o tipo desejado.</p>
-                </div>
-            </div>
-
-            <section class="shop-toolbar" aria-label="Filtros do catálogo">
-                <div class="filter-field search-field">
-                    <label for="catalogSearchFilter">Buscar produto</label>
-                    <input id="catalogSearchFilter" type="search" placeholder="Nome, SKU, linha ou variação" data-filter-search>
-                </div>
-
-                <div class="filter-field">
-                    <label for="catalogCategoryFilter">Categoria</label>
-                    <select id="catalogCategoryFilter" data-filter-category>
-                        <option value="">Todas</option>
-                    </select>
-                </div>
-
-                <div class="filter-field">
-                    <label for="catalogTypeFilter">Tipo</label>
-                    <select id="catalogTypeFilter" data-filter-type>
-                        <option value="">Todos</option>
-                    </select>
-                </div>
-
-                <button class="btn secondary clear-filters" type="button" data-clear-filters>
-                    <i class="fa-solid fa-filter-circle-xmark"></i>
-                    Limpar
-                </button>
+    <main id="main-content">
+        <div class="secao secao--topo">
+            <section class="conteudo topo-pagina">
+                <span class="eyebrow">Catálogo</span>
+                <h1>Opções para criar, personalizar e vender.</h1>
+                <p>Use este catálogo como ponto de partida. Cada item pode receber ajuste de cor, tamanho, nome, quantidade e acabamento.</p>
             </section>
+        </div>
 
-            <div class="filter-chips" data-filter-chips aria-label="Filtros rápidos"></div>
-
-            <div class="shop-summary" aria-live="polite">
-                <strong data-products-count>Carregando produtos...</strong>
-                <span>Produtos em destaque aparecem primeiro.</span>
-            </div>
-
-            <div class="product-grid" data-products-grid data-product-action="whatsapp" aria-live="polite">
-                <article class="shop-card product-loading">
-                    <div class="product-symbol"><i class="fa-solid fa-spinner"></i></div>
-                    <h2>Carregando catálogo</h2>
-                    <p>Buscando os produtos do arquivo products.json.</p>
-                </article>
-            </div>
-        </section>
-
-        <section class="catalog-section">
-            <div class="category-heading">
-                <i class="fa-solid fa-gift"></i>
-                <div>
-                    <h2>Presentes e lembrancinhas</h2>
-                    <p>Produtos pequenos, coloridos e fáceis de personalizar.</p>
+        <div class="secao revelar" data-reveal>
+        <section class="catalog-section conteudo">
+                <div class="category-heading">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    <div>
+                        <h2>Peças avulsas</h2>
+                        <p>Itens vendidos separadamente, fora dos kits. Para montar um kit completo, visite a loja.</p>
+                    </div>
                 </div>
-            </div>
-            <div class="catalog-grid">
-                <article class="catalog-card">
-                    <h3>Chaveiros personalizados</h3>
-                    <p>Nomes, logos, personagens, datas e frases curtas.</p>
-                    <a class="btn secondary" href="https://wa.me/5511987550497?text=Ol%C3%A1!%20Vi%20no%20site%20e%20quero%20um%20or%C3%A7amento%20de%3A%20Chaveiros%20personalizados" target="_blank" rel="noreferrer"><i class="fa-brands fa-whatsapp"></i> Pedir orçamento</a>
-                </article>
-                <article class="catalog-card">
-                    <h3>Lembrancinhas para eventos</h3>
-                    <p>Kits por quantidade para aniversário, escola e empresa.</p>
-                    <a class="btn secondary" href="https://wa.me/5511987550497?text=Ol%C3%A1!%20Vi%20no%20site%20e%20quero%20um%20or%C3%A7amento%20de%3A%20Lembrancinhas%20para%20eventos" target="_blank" rel="noreferrer"><i class="fa-brands fa-whatsapp"></i> Pedir orçamento</a>
-                </article>
-                <article class="catalog-card">
-                    <h3>Miniaturas decorativas</h3>
-                    <p>Peças para prateleiras, coleções e presentes criativos.</p>
-                    <a class="btn secondary" href="https://wa.me/5511987550497?text=Ol%C3%A1!%20Vi%20no%20site%20e%20quero%20um%20or%C3%A7amento%20de%3A%20Miniaturas%20decorativas" target="_blank" rel="noreferrer"><i class="fa-brands fa-whatsapp"></i> Pedir orçamento</a>
-                </article>
-            </div>
-        </section>
-
-        <section class="catalog-section">
-            <div class="category-heading">
-                <i class="fa-solid fa-screwdriver-wrench"></i>
-                <div>
-                    <h2>Utilitários e organização</h2>
-                    <p>Peças práticas para melhorar rotina, estudo e trabalho.</p>
+                <div class="product-grid loose-items-grid" data-catalog-items-grid aria-live="polite">
+                    <article class="shop-card product-loading">
+                        <div class="product-symbol"><i class="fa-solid fa-spinner"></i></div>
+                        <h2>Carregando itens</h2>
+                        <p>Buscando os itens do arquivo projetos.json.</p>
+                    </article>
                 </div>
-            </div>
-            <div class="catalog-grid">
-                <article class="catalog-card">
-                    <h3>Organizadores de mesa</h3>
-                    <p>Porta lápis, apoio de celular, suporte para cabos e acessórios.</p>
-                    <a class="btn secondary" href="https://wa.me/5511987550497?text=Ol%C3%A1!%20Vi%20no%20site%20e%20quero%20um%20or%C3%A7amento%20de%3A%20Organizadores%20de%20mesa" target="_blank" rel="noreferrer"><i class="fa-brands fa-whatsapp"></i> Pedir orçamento</a>
-                </article>
-                <article class="catalog-card">
-                    <h3>Suportes sob medida</h3>
-                    <p>Base para controle, headset, ferramentas, celular ou tablet.</p>
-                    <a class="btn secondary" href="contato.html">Orçar</a>
-                </article>
-                <article class="catalog-card">
-                    <h3>Peças de reposição simples</h3>
-                    <p>Tampas, adaptadores, espaçadores e encaixes não estruturais.</p>
-                    <a class="btn secondary" href="contato.html">Orçar</a>
-                </article>
-            </div>
-        </section>
+            </section>
+        </div>
 
-        <section class="catalog-section">
-            <div class="category-heading">
-                <i class="fa-solid fa-lightbulb"></i>
-                <div>
-                    <h2>Projetos especiais</h2>
-                    <p>Para quem tem uma ideia, arquivo 3D ou referência visual.</p>
+        <div class="secao secao--azul revelar" data-reveal>
+        <section class="catalog-section conteudo product-catalog-section">
+                <div class="category-heading">
+                    <i class="fa-solid fa-store"></i>
+                    <div>
+                        <h2>Produtos disponíveis</h2>
+                        <p>Itens carregados do arquivo products.json. Use os filtros para encontrar a linha ou o tipo desejado.</p>
+                    </div>
                 </div>
-            </div>
-            <div class="catalog-grid">
-                <article class="catalog-card">
-                    <h3>Protótipos</h3>
-                    <p>Peças para testar forma, encaixe e apresentação de ideias.</p>
-                    <a class="btn secondary" href="contato.html">Orçar</a>
-                </article>
-                <article class="catalog-card">
-                    <h3>Arquivos enviados</h3>
-                    <p>Impressão a partir de STL, OBJ ou modelo combinado no atendimento.</p>
-                    <a class="btn secondary" href="contato.html">Enviar ideia</a>
-                </article>
-                <article class="catalog-card">
-                    <h3>Brindes personalizados</h3>
-                    <p>Itens com identidade visual para eventos, marcas e equipes.</p>
-                    <a class="btn secondary" href="contato.html">Enviar ideia</a>
-                </article>
-            </div>
-        </section>
+
+                <section class="shop-toolbar" aria-label="Filtros do catálogo">
+                    <div class="filter-field search-field">
+                        <label for="catalogSearchFilter">Buscar produto</label>
+                        <input id="catalogSearchFilter" type="search" placeholder="Nome, SKU, linha ou variação" data-filter-search>
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="catalogCategoryFilter">Categoria</label>
+                        <select id="catalogCategoryFilter" data-filter-category>
+                            <option value="">Todas</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="catalogTypeFilter">Tipo</label>
+                        <select id="catalogTypeFilter" data-filter-type>
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+
+                    <button class="btn secondary clear-filters" type="button" data-clear-filters>
+                        <i class="fa-solid fa-filter-circle-xmark"></i>
+                        Limpar
+                    </button>
+                </section>
+
+                <div class="filter-chips" data-filter-chips aria-label="Filtros rápidos"></div>
+
+                <div class="shop-summary" aria-live="polite">
+                    <strong data-products-count>Carregando produtos...</strong>
+                    <span>Produtos em destaque aparecem primeiro.</span>
+                </div>
+
+                <div class="product-grid" data-products-grid data-product-action="whatsapp" aria-live="polite">
+                    <article class="shop-card product-loading">
+                        <div class="product-symbol"><i class="fa-solid fa-spinner"></i></div>
+                        <h2>Carregando catálogo</h2>
+                        <p>Buscando os produtos do arquivo products.json.</p>
+                    </article>
+                </div>
+            </section>
+        </div>
+
+        <div class="secao secao--pessego revelar" data-reveal>
+        <section class="catalog-section conteudo">
+                <div class="category-heading">
+                    <i class="fa-solid fa-gift"></i>
+                    <div>
+                        <h2>Presentes e lembrancinhas</h2>
+                        <p>Produtos pequenos, coloridos e fáceis de personalizar.</p>
+                    </div>
+                </div>
+                <div class="catalog-grid">
+                    <article class="catalog-card card">
+                        <h3>Chaveiros personalizados</h3>
+                        <p>Nomes, logos, personagens, datas e frases curtas.</p>
+                        <a class="btn secondary" href="https://wa.me/5511987550497?text=Ol%C3%A1!%20Vi%20no%20site%20e%20quero%20um%20or%C3%A7amento%20de%3A%20Chaveiros%20personalizados" target="_blank" rel="noreferrer"><i class="fa-brands fa-whatsapp"></i> Pedir orçamento</a>
+                    </article>
+                    <article class="catalog-card card">
+                        <h3>Lembrancinhas para eventos</h3>
+                        <p>Kits por quantidade para aniversário, escola e empresa.</p>
+                        <a class="btn secondary" href="https://wa.me/5511987550497?text=Ol%C3%A1!%20Vi%20no%20site%20e%20quero%20um%20or%C3%A7amento%20de%3A%20Lembrancinhas%20para%20eventos" target="_blank" rel="noreferrer"><i class="fa-brands fa-whatsapp"></i> Pedir orçamento</a>
+                    </article>
+                    <article class="catalog-card card">
+                        <h3>Miniaturas decorativas</h3>
+                        <p>Peças para prateleiras, coleções e presentes criativos.</p>
+                        <a class="btn secondary" href="https://wa.me/5511987550497?text=Ol%C3%A1!%20Vi%20no%20site%20e%20quero%20um%20or%C3%A7amento%20de%3A%20Miniaturas%20decorativas" target="_blank" rel="noreferrer"><i class="fa-brands fa-whatsapp"></i> Pedir orçamento</a>
+                    </article>
+                </div>
+            </section>
+        </div>
+
+        <div class="secao revelar" data-reveal>
+        <section class="catalog-section conteudo">
+                <div class="category-heading">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <div>
+                        <h2>Utilitários e organização</h2>
+                        <p>Peças práticas para melhorar rotina, estudo e trabalho.</p>
+                    </div>
+                </div>
+                <div class="catalog-grid">
+                    <article class="catalog-card card">
+                        <h3>Organizadores de mesa</h3>
+                        <p>Porta lápis, apoio de celular, suporte para cabos e acessórios.</p>
+                        <a class="btn secondary" href="https://wa.me/5511987550497?text=Ol%C3%A1!%20Vi%20no%20site%20e%20quero%20um%20or%C3%A7amento%20de%3A%20Organizadores%20de%20mesa" target="_blank" rel="noreferrer"><i class="fa-brands fa-whatsapp"></i> Pedir orçamento</a>
+                    </article>
+                    <article class="catalog-card card">
+                        <h3>Suportes sob medida</h3>
+                        <p>Base para controle, headset, ferramentas, celular ou tablet.</p>
+                        <a class="btn secondary" href="contato.html">Orçar</a>
+                    </article>
+                    <article class="catalog-card card">
+                        <h3>Peças de reposição simples</h3>
+                        <p>Tampas, adaptadores, espaçadores e encaixes não estruturais.</p>
+                        <a class="btn secondary" href="contato.html">Orçar</a>
+                    </article>
+                </div>
+            </section>
+        </div>
+
+        <div class="secao secao--lilas revelar" data-reveal>
+        <section class="catalog-section conteudo">
+                <div class="category-heading">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <div>
+                        <h2>Projetos especiais</h2>
+                        <p>Para quem tem uma ideia, arquivo 3D ou referência visual.</p>
+                    </div>
+                </div>
+                <div class="catalog-grid">
+                    <article class="catalog-card card">
+                        <h3>Protótipos</h3>
+                        <p>Peças para testar forma, encaixe e apresentação de ideias.</p>
+                        <a class="btn secondary" href="contato.html">Orçar</a>
+                    </article>
+                    <article class="catalog-card card">
+                        <h3>Arquivos enviados</h3>
+                        <p>Impressão a partir de STL, OBJ ou modelo combinado no atendimento.</p>
+                        <a class="btn secondary" href="contato.html">Enviar ideia</a>
+                    </article>
+                    <article class="catalog-card card">
+                        <h3>Brindes personalizados</h3>
+                        <p>Itens com identidade visual para eventos, marcas e equipes.</p>
+                        <a class="btn secondary" href="contato.html">Enviar ideia</a>
+                    </article>
+                </div>
+            </section>
+        </div>
     </main>
 
     <a class="whatsapp-float" href="https://wa.me/5511987550497?text=Ol%C3%A1%2C%20Pippo%20Designs%203D!%20Quero%20fazer%20um%20or%C3%A7amento." target="_blank" rel="noreferrer" aria-label="Falar com a Pippo Designs 3D no WhatsApp">
@@ -217,8 +229,8 @@
 
     <footer>
         <p>&copy; 2026 Pippo Designs 3D. Todos os direitos reservados.</p>
-        <p>Gabriel Pimentel da Silva | CNPJ 65.538.268/0001-27 | Santa Isabel - SP</p>
-        <p><i class="fa-solid fa-phone"></i> +55 11 98755-0497 | <i class="fa-solid fa-envelope"></i> pippodesigns@icloud.com</p>
+        <p>Pippo Designs 3D · CNPJ 65.538.268/0001-27</p>
+        <p><i class="fa-solid fa-location-dot"></i> Santa Isabel - SP | <i class="fa-solid fa-phone"></i> +55 11 98755-0497 | <i class="fa-solid fa-envelope"></i> pippodesigns@icloud.com</p>
         <p class="footer-links"><a href="politica.html">Política de Privacidade e Trocas</a></p>
         <div class="redes-sociais">
             <a href="https://www.instagram.com/pippodesings3d/" target="_blank" rel="noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>

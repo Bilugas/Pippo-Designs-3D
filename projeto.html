@@ -24,6 +24,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="src/img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="64x64" href="src/img/pippo-designs-3d-favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="src/img/apple-touch-icon.png">
+    <script src="src/products-data.js" defer></script>
     <script src="src/projetos-data.js" defer></script>
     <script src="src/scripts.js" defer></script>
 </head>
@@ -50,7 +51,9 @@
         </ul>
     </nav>
 
-    <main class="product-detail-page project-detail-page" id="main-content">
+    <main id="main-content">
+        <div class="secao secao--topo secao--compacta">
+        <div class="conteudo product-detail-page project-detail-page">
         <nav class="breadcrumb" aria-label="Navegação estrutural">
             <a href="index.html">Início</a>
             <i class="fa-solid fa-chevron-right"></i>
@@ -66,6 +69,18 @@
                 <p>Buscando detalhes do kit.</p>
             </article>
         </div>
+        </div>
+        </div>
+
+        <div class="secao secao--azul revelar" data-reveal data-related-section hidden>
+            <section class="conteudo" aria-labelledby="related-title">
+                <div class="secao-titulo">
+                    <span class="eyebrow">Mais da loja</span>
+                    <h2 id="related-title">Você também pode gostar</h2>
+                </div>
+                <div class="product-grid" data-related-grid></div>
+            </section>
+        </div>
     </main>
 
     <a class="whatsapp-float" href="https://wa.me/5511987550497?text=Ol%C3%A1%2C%20Pippo%20Designs%203D!%20Quero%20fazer%20um%20or%C3%A7amento." target="_blank" rel="noreferrer" aria-label="Falar com a Pippo Designs 3D no WhatsApp">
@@ -75,8 +90,8 @@
 
     <footer>
         <p>&copy; 2026 Pippo Designs 3D. Todos os direitos reservados.</p>
-        <p>Gabriel Pimentel da Silva | CNPJ 65.538.268/0001-27 | Santa Isabel - SP</p>
-        <p><i class="fa-solid fa-phone"></i> +55 11 98755-0497 | <i class="fa-solid fa-envelope"></i> pippodesigns@icloud.com</p>
+        <p>Pippo Designs 3D · CNPJ 65.538.268/0001-27</p>
+        <p><i class="fa-solid fa-location-dot"></i> Santa Isabel - SP | <i class="fa-solid fa-phone"></i> +55 11 98755-0497 | <i class="fa-solid fa-envelope"></i> pippodesigns@icloud.com</p>
         <p class="footer-links"><a href="politica.html">Política de Privacidade e Trocas</a></p>
         <div class="redes-sociais">
             <a href="https://www.instagram.com/pippodesings3d/" target="_blank" rel="noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
