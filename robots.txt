@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pippodesigns3d.com.br/sitemap.xml
