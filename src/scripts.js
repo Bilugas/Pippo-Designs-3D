@@ -716,9 +716,16 @@ function setupReveal() {
                 observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.1, rootMargin: "0px 0px -5% 0px" });
+    }, { threshold: 0, rootMargin: "0px 0px -5% 0px" });
 
     items.forEach((item) => observer.observe(item));
+
+    // Rede de segurança: garante que nenhuma seção fique invisível para sempre
+    // caso o navegador nunca reporte a interseção (ex.: seções muito altas ou rolagem rápida).
+    setTimeout(() => {
+        items.forEach((item) => item.classList.add("is-visible"));
+        observer.disconnect();
+    }, 4000);
 }
 
 function applyUrlFilter(rawValue, select, filters, key) {
