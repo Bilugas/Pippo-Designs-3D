@@ -141,7 +141,6 @@ nav ul li:nth-child(2) a i { color: var(--pippo-coral-escuro); }
 nav ul li:nth-child(3) a i { color: var(--pippo-lilas-escuro); }
 nav ul li:nth-child(4) a i { color: var(--pippo-pessego-escuro); }
 nav ul li:nth-child(5) a i { color: var(--pippo-rosa-escuro); }
-nav ul li:nth-child(6) a i { color: var(--pippo-marinho); }
 
 nav ul li a:hover i,
 nav ul li a.active i {
@@ -459,6 +458,14 @@ footer .redes-sociais a:hover {
 
     .menu li {
         width: 100%;
+    }
+
+    .menu li:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+    }
+
+    .menu li:last-child:nth-child(odd) a {
+        flex-direction: row;
     }
 
     nav ul li a {
