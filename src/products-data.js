@@ -16,7 +16,7 @@ window.PRODUCTS_DATA = [
   {
     "id": "blastoise",
     "nome": "Blastoise",
-    "linha": "Geek Premium",
+    "linha": "Pokémon",
     "categoria": "Personagem",
     "tipo": "Display",
     "preco": 280,
@@ -86,5 +86,623 @@ window.PRODUCTS_DATA = [
     "imagem": "/produtos/patolino-shopping.webp",
     "selo": "",
     "ativo": true
+  },
+  {
+    "id": "mario",
+    "nome": "Mario",
+    "linha": "Games",
+    "categoria": "Personagem",
+    "tipo": "Display",
+    "preco": 170,
+    "sku": "FGG-008-2",
+    "imagem": "/produtos/fgg-008-2-mario.webp",
+    "imagens": [
+      "/produtos/fgg-008-2-mario.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "luigi",
+    "nome": "Luigi",
+    "linha": "Games",
+    "categoria": "Personagem",
+    "tipo": "Display",
+    "preco": 150,
+    "sku": "FGG-008-1",
+    "imagem": "/produtos/fgg-008-1-luigi.webp",
+    "imagens": [
+      "/produtos/fgg-008-1-luigi.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "breaking-bad",
+    "nome": "Breaking Bad",
+    "linha": "Filmes e séries",
+    "categoria": "Personagem",
+    "tipo": "Display",
+    "preco": 100,
+    "sku": "FGG-002",
+    "imagem": "/produtos/fgg-002-breaking-bad.webp",
+    "imagens": [
+      "/produtos/fgg-002-breaking-bad.webp",
+      "/produtos/fgg-002-breaking-bad-2.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "harry-potter",
+    "nome": "Harry Potter",
+    "linha": "Filmes e séries",
+    "categoria": "Personagem",
+    "tipo": "Display",
+    "preco": 60,
+    "sku": "FGP-008",
+    "imagem": "/produtos/fgp-008-harry-potter.webp",
+    "imagens": [
+      "/produtos/fgp-008-harry-potter.webp",
+      "/produtos/fgp-008-harry-potter-2.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": "/videos/fgp-008-harry-potter.mp4",
+    "video_poster": "/videos/fgp-008-harry-potter-poster.webp",
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "luffy",
+    "nome": "Luffy",
+    "linha": "Anime",
+    "categoria": "Personagem",
+    "tipo": "Display",
+    "preco": 90,
+    "sku": "FGG-006",
+    "imagem": "/produtos/fgg-006-luffy.webp",
+    "imagens": [
+      "/produtos/fgg-006-luffy.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "goku-grande",
+    "nome": "Goku grande",
+    "linha": "Anime",
+    "categoria": "Personagem",
+    "tipo": "Display",
+    "preco": 150,
+    "sku": "FGG-004",
+    "imagem": "/produtos/fgg-004-goku-grande.webp",
+    "imagens": [
+      "/produtos/fgg-004-goku-grande.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "majin-boo",
+    "nome": "Majin Boo",
+    "linha": "Anime",
+    "categoria": "Personagem",
+    "tipo": "Display",
+    "preco": 90,
+    "sku": "FGG-007",
+    "imagem": "/produtos/fgg-007-majin-boo.webp",
+    "imagens": [
+      "/produtos/fgg-007-majin-boo.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "vegeta",
+    "nome": "Vegeta",
+    "linha": "Anime",
+    "categoria": "Personagem",
+    "tipo": "Display",
+    "preco": 150,
+    "sku": "FGG-017",
+    "imagem": "/produtos/fgg-017-vegeta.webp",
+    "imagens": [
+      "/produtos/fgg-017-vegeta.webp",
+      "/produtos/fgg-017-vegeta-2.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "encomenda",
+    "prazo": "3 dias úteis",
+    "video": null,
+    "video_poster": null,
+    "descricao": "Feita sob encomenda: produção em até 3 dias úteis. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "dexter",
+    "nome": "Dexter",
+    "linha": "Filmes e séries",
+    "categoria": "Personagem",
+    "tipo": "Display",
+    "preco": 99,
+    "sku": "FGG-016",
+    "imagem": "/produtos/fgg-016-dexter.webp",
+    "imagens": [
+      "/produtos/fgg-016-dexter.webp",
+      "/produtos/fgg-016-dexter-2.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "encomenda",
+    "prazo": "3 dias úteis",
+    "video": null,
+    "video_poster": null,
+    "descricao": "Feita sob encomenda: produção em até 3 dias úteis. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "evolucoes-eevee",
+    "nome": "Evoluções Eevee",
+    "linha": "Pokémon",
+    "categoria": "Personagem",
+    "tipo": "Display",
+    "preco": 40,
+    "sku": "FGP-007",
+    "imagem": "/produtos/fgp-007-evolucoes-eevee.webp",
+    "imagens": [
+      "/produtos/fgp-007-evolucoes-eevee.webp",
+      "/produtos/fgp-007-evolucoes-eevee-2.webp",
+      "/produtos/fgp-007-evolucoes-eevee-3.webp",
+      "/produtos/fgp-007-evolucoes-eevee-4.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "totodile",
+    "nome": "Totodile",
+    "linha": "Pokémon",
+    "categoria": "Personagem",
+    "tipo": "Display",
+    "preco": 40,
+    "sku": "FGP-015-1",
+    "imagem": "/produtos/fgp-015-1-totodile.webp",
+    "imagens": [
+      "/produtos/fgp-015-1-totodile.webp",
+      "/produtos/fgp-015-1-totodile-2.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "pikachu",
+    "nome": "Pikachu",
+    "linha": "Pokémon",
+    "categoria": "Personagem",
+    "tipo": "Display",
+    "preco": 40,
+    "sku": "FGP-015-2",
+    "imagem": "/produtos/fgp-015-2-pikachu.webp",
+    "imagens": [
+      "/produtos/fgp-015-2-pikachu.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "pokebola",
+    "nome": "Pokébola",
+    "linha": "Pokémon",
+    "categoria": "Utilitário",
+    "tipo": "Display",
+    "preco": 35,
+    "sku": "UTL-002",
+    "imagem": "/produtos/utl-002-pokebola.webp",
+    "imagens": [
+      "/produtos/utl-002-pokebola.webp",
+      "/produtos/utl-002-pokebola-2.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "suporte-cubone",
+    "nome": "Suporte Cubone",
+    "linha": "Pokémon",
+    "categoria": "Utilitário",
+    "tipo": "Display",
+    "preco": 50,
+    "sku": "UTL-005",
+    "imagem": "/produtos/utl-005-suporte-cubone.webp",
+    "imagens": [
+      "/produtos/utl-005-suporte-cubone.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "suporte-gta",
+    "nome": "Suporte GTA",
+    "linha": "Games",
+    "categoria": "Utilitário",
+    "tipo": "Display",
+    "preco": 45,
+    "sku": "UTL-007",
+    "imagem": "/produtos/utl-007-suporte-gta.webp",
+    "imagens": [
+      "/produtos/utl-007-suporte-gta.webp",
+      "/produtos/utl-007-suporte-gta-2.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": true,
+    "variacoes": [
+      {
+        "nome": "Normal",
+        "sku": "UTL-007-1",
+        "preco": 45
+      },
+      {
+        "nome": "Grande",
+        "sku": "UTL-007-2",
+        "preco": 200
+      }
+    ],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "suporte-controle-xbox",
+    "nome": "Suporte controle Xbox",
+    "linha": "Games",
+    "categoria": "Utilitário",
+    "tipo": "Display",
+    "preco": 35,
+    "sku": "UTL-004",
+    "imagem": "/produtos/utl-004-suporte-controle-xbox.webp",
+    "imagens": [
+      "/produtos/utl-004-suporte-controle-xbox.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "torre-de-dados",
+    "nome": "Torre de dados",
+    "linha": "Games",
+    "categoria": "Utilitário",
+    "tipo": "Display",
+    "preco": 150,
+    "sku": "UTL-009",
+    "imagem": "/produtos/utl-009-torre-de-dados.webp",
+    "imagens": [
+      "/produtos/utl-009-torre-de-dados.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "rpg-personagens-1",
+    "nome": "RPG personagens 1",
+    "linha": "Games",
+    "categoria": "Personagem",
+    "tipo": "Display",
+    "preco": 10,
+    "sku": "FGP-016",
+    "imagem": "/produtos/fgp-016-rpg-personagens-1.webp",
+    "imagens": [
+      "/produtos/fgp-016-rpg-personagens-1.webp",
+      "/produtos/fgp-016-rpg-personagens-1-2.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": true,
+    "variacoes": [
+      {
+        "nome": "Padrão",
+        "sku": "FGP-016-1",
+        "preco": 10
+      },
+      {
+        "nome": "Completo",
+        "sku": "FGP-016-2",
+        "preco": 50
+      }
+    ],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "rpg-personagens-2",
+    "nome": "RPG personagens 2",
+    "linha": "Games",
+    "categoria": "Personagem",
+    "tipo": "Display",
+    "preco": 15,
+    "sku": "FGP-017",
+    "imagem": "/produtos/fgp-017-rpg-personagens-2.webp",
+    "imagens": [
+      "/produtos/fgp-017-rpg-personagens-2.webp",
+      "/produtos/fgp-017-rpg-personagens-2-2.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": true,
+    "variacoes": [
+      {
+        "nome": "Padrão",
+        "sku": "FGP-017-1",
+        "preco": 15
+      },
+      {
+        "nome": "Completo",
+        "sku": "FGP-017-2",
+        "preco": 80
+      }
+    ],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "bala-no-alvo",
+    "nome": "Bala no alvo",
+    "linha": "Filmes e séries",
+    "categoria": "Brinquedo",
+    "tipo": "Interativo",
+    "preco": 40,
+    "sku": "FID-001",
+    "imagem": "/produtos/fid-001-bala-no-alvo.webp",
+    "imagens": [
+      "/produtos/fid-001-bala-no-alvo.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "horta-sensorial",
+    "nome": "Horta sensorial",
+    "linha": "Brinquedos",
+    "categoria": "Brinquedo",
+    "tipo": "Interativo",
+    "preco": 76,
+    "sku": "FID-012",
+    "imagem": "/produtos/fid-012-horta-sensorial.webp",
+    "imagens": [
+      "/produtos/fid-012-horta-sensorial.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": "/videos/fid-012-horta-sensorial.mp4",
+    "video_poster": "/videos/fid-012-horta-sensorial-poster.webp",
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "varinha-polvo",
+    "nome": "Varinha polvo",
+    "linha": "Brinquedos",
+    "categoria": "Brinquedo",
+    "tipo": "Interativo",
+    "preco": 35,
+    "sku": "FID-023",
+    "imagem": "/produtos/fid-023-varinha-polvo.webp",
+    "imagens": [
+      "/produtos/fid-023-varinha-polvo.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": "/videos/fid-023-varinha-polvo.mp4",
+    "video_poster": "/videos/fid-023-varinha-polvo-poster.webp",
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "guarda-chuva",
+    "nome": "Guarda-chuva",
+    "linha": "Brinquedos",
+    "categoria": "Brinquedo",
+    "tipo": "Interativo",
+    "preco": 50,
+    "sku": "FID-011",
+    "imagem": "/produtos/fid-011-guarda-chuva.webp",
+    "imagens": [
+      "/produtos/fid-011-guarda-chuva.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "tubarao-articulado",
+    "nome": "Tubarão articulado",
+    "linha": "Brinquedos",
+    "categoria": "Brinquedo",
+    "tipo": "Interativo",
+    "preco": 20,
+    "sku": "FID-021",
+    "imagem": "/produtos/fid-021-tubarao.webp",
+    "imagens": [
+      "/produtos/fid-021-tubarao.webp",
+      "/produtos/fid-021-tubarao-2.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "soldadinhos",
+    "nome": "Soldadinhos",
+    "linha": "Brinquedos",
+    "categoria": "Brinquedo",
+    "tipo": "Interativo",
+    "preco": 10,
+    "sku": "FID-020",
+    "imagem": "/produtos/fid-020-soldadinhos.webp",
+    "imagens": [
+      "/produtos/fid-020-soldadinhos.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
+  },
+  {
+    "id": "jesus-sentado",
+    "nome": "Jesus sentado",
+    "linha": "Religiosos",
+    "categoria": "Personagem",
+    "tipo": "Display",
+    "preco": 25,
+    "sku": "FGP-010",
+    "imagem": "/produtos/fgp-010-jesus-sentado.webp",
+    "imagens": [
+      "/produtos/fgp-010-jesus-sentado.webp"
+    ],
+    "selo": "",
+    "ativo": true,
+    "preco_a_partir_de": false,
+    "variacoes": [],
+    "disponibilidade": "pronta-entrega",
+    "prazo": null,
+    "video": null,
+    "video_poster": null,
+    "descricao": "Peça impressa em 3D. Peça pelo WhatsApp e retire na Feira Noturna de Santa Isabel (sextas à noite)."
   }
 ];

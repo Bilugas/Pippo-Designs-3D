@@ -84,6 +84,43 @@ function getProductCategory(product) {
     return product.linha || product.categoria || "Outros";
 }
 
+function getProductVariations(product) {
+    return Array.isArray(product.variacoes) ? product.variacoes : [];
+}
+
+function hasPricedVariations(product) {
+    return getProductVariations(product).some((variation) => variation && typeof variation === "object");
+}
+
+function getVariationName(variation) {
+    return typeof variation === "string" ? variation : variation?.nome || "";
+}
+
+function isMadeToOrder(product) {
+    return product.disponibilidade === "encomenda";
+}
+
+function getMadeToOrderLabel(product) {
+    return product.prazo ? `Sob encomenda · ${product.prazo}` : "Sob encomenda";
+}
+
+function formatProductPrice(product) {
+    return product.preco_a_partir_de ? `A partir de ${formatMoney(product.preco)}` : formatMoney(product.preco);
+}
+
+function buildProductWhatsAppMessage(product, variation = null) {
+    const intro = isMadeToOrder(product) ? "Quero encomendar este produto:" : "Quero comprar ou orçar este produto:";
+    const lines = [product.nome, `SKU: ${product.sku || product.id}`];
+
+    if (variation) {
+        lines.push(`Variação: ${getVariationName(variation)}${variation.sku ? ` (${variation.sku})` : ""}`);
+    }
+
+    lines.push(`Preço: ${formatMoney(variation?.preco ?? product.preco)}`);
+
+    return `Olá, Pippo Designs 3D! ${intro}\n\n${lines.join("\n")}`;
+}
+
 function getProductIconClass(product) {
     const searchText = getProductSearchText(product);
 
@@ -140,7 +177,7 @@ function getProductSearchText(product) {
         product.categoria,
         product.tipo,
         product.sku,
-        ...(Array.isArray(product.variacoes) ? product.variacoes : []),
+        ...getProductVariations(product).map((variation) => `${getVariationName(variation)} ${variation?.sku || ""}`),
     ].join(" "));
 }
 
@@ -215,6 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setupProductCatalog();
     setupFeaturedProducts();
+    setupThemeProducts();
     setupHeroCarousel();
     setupReveal();
     setupProjectsCatalog();
@@ -448,9 +486,9 @@ function renderProductCard(product, action = "cart", options = {}) {
     const placeholderClasses = getProductPlaceholderClasses(product);
     const iconClass = getProductIconClass(product);
     const variations = Array.isArray(product.variacoes) && product.variacoes.length
-        ? `<p class="product-variations">Variações: ${product.variacoes.map(escapeHtml).join(", ")}</p>`
+        ? `<p class="product-variations">Variações: ${product.variacoes.map((variation) => escapeHtml(getVariationName(variation))).join(", ")}</p>`
         : "";
-    const variationControl = action === "cart" && Array.isArray(product.variacoes) && product.variacoes.length
+    const variationControl = action === "cart" && Array.isArray(product.variacoes) && product.variacoes.length && !hasPricedVariations(product)
         ? `
             <div class="product-variation-field">
                 <label for="variation-${escapeHtml(createDomId(product.id))}">Variação</label>
@@ -460,8 +498,23 @@ function renderProductCard(product, action = "cart", options = {}) {
             </div>
         `
         : "";
-    const buyMessage = `Olá, Pippo Designs 3D! Quero comprar ou orçar este produto:\n\n${product.nome}\nSKU: ${product.sku || product.id}\nPreço: ${formatMoney(product.preco)}`;
-    const actionControl = action === "whatsapp"
+    const buyMessage = buildProductWhatsAppMessage(product);
+    const madeToOrder = isMadeToOrder(product);
+    const actionControl = madeToOrder
+        ? `
+            <a class="btn primary" href="${buildWhatsAppUrl(buyMessage)}" target="_blank" rel="noreferrer">
+                <i class="fa-brands fa-whatsapp"></i>
+                Encomendar pelo WhatsApp
+            </a>
+        `
+        : hasPricedVariations(product)
+        ? `
+            <a class="btn primary" href="produto.html?id=${escapeHtml(product.id)}">
+                <i class="fa-solid fa-list-check"></i>
+                Escolher opção
+            </a>
+        `
+        : action === "whatsapp"
         ? `
             <a class="btn primary" href="${buildWhatsAppUrl(buyMessage)}" target="_blank" rel="noreferrer">
                 <i class="fa-brands fa-whatsapp"></i>
@@ -495,6 +548,7 @@ function renderProductCard(product, action = "cart", options = {}) {
                 <div class="product-meta">
                     <span class="product-tag">${escapeHtml(category)}</span>
                     <span class="product-tag type">${escapeHtml(type)}</span>
+                    ${madeToOrder ? `<span class="selo selo--encomenda">${escapeHtml(getMadeToOrderLabel(product))}</span>` : ""}
                 </div>
                 <h2>${escapeHtml(product.nome)}</h2>
                 <p>${escapeHtml(product.categoria || product.linha || "Produto impresso em 3D")}</p>
@@ -505,7 +559,7 @@ function renderProductCard(product, action = "cart", options = {}) {
                     <i class="fa-solid fa-circle-info"></i> Detalhes
                 </a>
                 <div class="product-footer">
-                    <strong class="product-price">${formatMoney(product.preco)}</strong>
+                    <strong class="product-price">${escapeHtml(formatProductPrice(product))}</strong>
                     ${actionControl}
                 </div>
             </div>
@@ -568,6 +622,43 @@ async function setupFeaturedProducts() {
                 <p>Confira se o arquivo products.json está disponível pelo servidor local.</p>
             </article>
         `;
+        console.error(error);
+    }
+}
+
+async function setupThemeProducts() {
+    const grid = document.querySelector("[data-theme-products]");
+
+    if (!grid) {
+        return;
+    }
+
+    try {
+        const data = await loadProductsData();
+        const theme = grid.dataset.themeProducts;
+        const themeProducts = sortCatalogProducts(data.filter((product) => getProductCategory(product) === theme));
+
+        if (!themeProducts.length) {
+            grid.closest("[data-theme-section]")?.setAttribute("hidden", "");
+            return;
+        }
+
+        grid.innerHTML = themeProducts.map((product) => renderProductCard(product, "cart")).join("");
+        requestAnimationFrame(() => grid.classList.add("product-grid-loaded"));
+        grid.addEventListener("error", (event) => {
+            if (event.target.matches(".product-media img")) {
+                event.target.classList.add("is-missing");
+            }
+        }, true);
+        grid.addEventListener("click", (event) => {
+            const button = event.target.closest("[data-add-cart]");
+
+            if (button) {
+                addProductToStoredCart(button);
+            }
+        });
+    } catch (error) {
+        grid.closest("[data-theme-section]")?.setAttribute("hidden", "");
         console.error(error);
     }
 }
@@ -1455,41 +1546,66 @@ async function setupProductDetail() {
         }
 
         const image = normalizeImagePath(product.imagem);
+        const images = Array.isArray(product.imagens) && product.imagens.length ? product.imagens : [product.imagem];
         const placeholderClasses = getProductPlaceholderClasses(product);
         const iconClass = getProductIconClass(product);
         const category = getProductCategory(product);
         const type = getProductType(product);
         const hasVariations = Array.isArray(product.variacoes) && product.variacoes.length;
-        const buyMessage = `Olá, Pippo Designs 3D! Quero comprar ou orçar este produto:\n\n${product.nome}\nSKU: ${product.sku || product.id}\nPreço: ${formatMoney(product.preco)}`;
+        const pricedVariations = hasPricedVariations(product);
+        const madeToOrder = isMadeToOrder(product);
+        const getSelectedVariation = () => {
+            const select = detail.querySelector("[data-detail-variation]");
+
+            return pricedVariations && select ? product.variacoes[Number(select.value)] : null;
+        };
+        const firstVariation = pricedVariations ? product.variacoes[0] : null;
+        const buyMessage = buildProductWhatsAppMessage(product, firstVariation);
 
         detail.innerHTML = `
-            <div class="product-detail-media ${escapeHtml(placeholderClasses)}">
-                ${product.destaque ? '<span class="featured-badge"><i class="fa-solid fa-star"></i> Destaque</span>' : ""}
-                <img src="${escapeHtml(image)}" alt="${escapeHtml(product.nome)}">
-                <div class="product-image-fallback" aria-hidden="true"><i class="fa-solid ${escapeHtml(iconClass)}"></i></div>
+            <div class="product-detail-gallery">
+                <div class="product-detail-media ${escapeHtml(placeholderClasses)}">
+                    ${product.destaque ? '<span class="featured-badge"><i class="fa-solid fa-star"></i> Destaque</span>' : ""}
+                    <img data-gallery-image src="${escapeHtml(image)}" alt="${escapeHtml(product.nome)}">
+                    <div class="product-image-fallback" aria-hidden="true"><i class="fa-solid ${escapeHtml(iconClass)}"></i></div>
+                </div>
+                ${images.length > 1 ? `
+                <div class="project-gallery-thumbs" data-gallery-thumbs>
+                    ${images.map((img, index) => `
+                        <button type="button" class="project-thumb${index === 0 ? " active" : ""}" data-gallery-thumb data-src="${escapeHtml(normalizeImagePath(img))}" aria-label="Ver foto ${index + 1}">
+                            <img src="${escapeHtml(normalizeImagePath(img))}" alt="Foto ${index + 1} de ${escapeHtml(product.nome)}" loading="lazy">
+                        </button>
+                    `).join("")}
+                </div>` : ""}
+                ${product.video ? `
+                <video class="product-detail-video" src="${escapeHtml(normalizeImagePath(product.video))}"${product.video_poster ? ` poster="${escapeHtml(normalizeImagePath(product.video_poster))}"` : ""} muted loop playsinline autoplay aria-label="Vídeo de ${escapeHtml(product.nome)}"></video>` : ""}
             </div>
             <div class="product-detail-info">
                 <div class="product-meta">
                     <span class="product-tag">${escapeHtml(category)}</span>
                     <span class="product-tag type">${escapeHtml(type)}</span>
+                    ${madeToOrder ? `<span class="selo selo--encomenda">${escapeHtml(getMadeToOrderLabel(product))}</span>` : ""}
                 </div>
                 <h1 class="product-detail-name">${escapeHtml(product.nome)}</h1>
-                <strong class="product-detail-price">${formatMoney(product.preco)}</strong>
-                <p class="product-detail-desc">${escapeHtml(product.categoria || product.linha || "Produto impresso em 3D")}</p>
+                <strong class="product-detail-price" data-detail-price>${formatMoney(firstVariation ? firstVariation.preco : product.preco)}</strong>
+                <p class="product-detail-desc">${escapeHtml(product.descricao || product.categoria || product.linha || "Produto impresso em 3D")}</p>
                 ${hasVariations ? `
                 <div class="product-variation-field">
                     <label for="detail-variation">Variação</label>
                     <select id="detail-variation" data-detail-variation>
-                        ${product.variacoes.map((v) => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("")}
+                        ${pricedVariations
+                            ? product.variacoes.map((v, index) => `<option value="${index}">${escapeHtml(getVariationName(v))} — ${formatMoney(v.preco)}</option>`).join("")
+                            : product.variacoes.map((v) => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("")}
                     </select>
                 </div>` : ""}
-                <span class="product-sku">${escapeHtml(product.sku || product.id)}</span>
+                <span class="product-sku" data-detail-sku>${escapeHtml(firstVariation?.sku || product.sku || product.id)}</span>
                 <div class="product-detail-actions">
+                    ${madeToOrder ? "" : `
                     <button class="btn primary" type="button" data-detail-add-cart>
                         <i class="fa-solid fa-cart-plus"></i> Adicionar ao carrinho
-                    </button>
-                    <a class="btn secondary" href="${escapeHtml(buildWhatsAppUrl(buyMessage))}" target="_blank" rel="noreferrer">
-                        <i class="fa-brands fa-whatsapp"></i> Comprar pelo WhatsApp
+                    </button>`}
+                    <a class="btn ${madeToOrder ? "primary" : "secondary"}" data-detail-whatsapp href="${escapeHtml(buildWhatsAppUrl(buyMessage))}" target="_blank" rel="noreferrer">
+                        <i class="fa-brands fa-whatsapp"></i> ${madeToOrder ? "Encomendar" : "Comprar"} pelo WhatsApp
                     </a>
                     <button class="btn secondary" type="button" data-share-btn>
                         <i class="fa-solid fa-share-nodes"></i> Compartilhar
@@ -1507,6 +1623,35 @@ async function setupProductDetail() {
             img.addEventListener("error", () => img.classList.add("is-missing"));
         }
 
+        const thumbsWrap = detail.querySelector("[data-gallery-thumbs]");
+
+        if (thumbsWrap && img) {
+            thumbsWrap.addEventListener("click", (event) => {
+                const thumb = event.target.closest("[data-gallery-thumb]");
+
+                if (!thumb) {
+                    return;
+                }
+
+                thumbsWrap.querySelectorAll(".project-thumb").forEach((el) => el.classList.remove("active"));
+                thumb.classList.add("active");
+                img.classList.remove("is-missing");
+                img.src = thumb.dataset.src;
+            });
+        }
+
+        const detailVariationSelect = detail.querySelector("[data-detail-variation]");
+
+        if (detailVariationSelect && pricedVariations) {
+            detailVariationSelect.addEventListener("change", () => {
+                const variation = getSelectedVariation();
+
+                detail.querySelector("[data-detail-price]").textContent = formatMoney(variation.preco);
+                detail.querySelector("[data-detail-sku]").textContent = variation.sku || product.sku || product.id;
+                detail.querySelector("[data-detail-whatsapp]").href = buildWhatsAppUrl(buildProductWhatsAppMessage(product, variation));
+            });
+        }
+
         setupRelatedProducts(product);
 
         const addCartBtn = detail.querySelector("[data-detail-add-cart]");
@@ -1514,7 +1659,8 @@ async function setupProductDetail() {
         if (addCartBtn) {
             addCartBtn.addEventListener("click", () => {
                 const variationSelect = detail.querySelector("[data-detail-variation]");
-                const variation = variationSelect ? variationSelect.value : "";
+                const selectedVariation = getSelectedVariation();
+                const variation = selectedVariation ? getVariationName(selectedVariation) : variationSelect ? variationSelect.value : "";
                 const cartId = variation ? `${product.id}::${variation}` : product.id;
                 const displayName = variation ? `${product.nome} - ${variation}` : product.nome;
 
@@ -1525,8 +1671,8 @@ async function setupProductDetail() {
                         id: cartId,
                         productId: product.id,
                         name: displayName,
-                        price: product.preco,
-                        sku: product.sku || product.id,
+                        price: selectedVariation ? selectedVariation.preco : product.preco,
+                        sku: selectedVariation?.sku || product.sku || product.id,
                         variation,
                         note: "",
                         quantity: 0,

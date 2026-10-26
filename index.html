@@ -87,6 +87,9 @@
 
                 <div class="hero-carousel" data-carousel role="group" aria-roledescription="carrossel" aria-label="Produtos em destaque">
                     <div class="carousel-track" data-carousel-track>
+                        <a class="carousel-slide" href="loja.html" aria-label="Ver a loja">
+                            <video src="videos/home-vitrine.mp4" poster="videos/home-vitrine-poster.webp" muted loop playsinline autoplay aria-label="Vitrine de peças impressas em 3D"></video>
+                        </a>
                         <a class="carousel-slide" href="produto.html?id=blastoise" aria-label="Ver Blastoise">
                             <img src="produtos/blastoise.webp" alt="Blastoise impresso em 3D" width="800" height="1067" fetchpriority="high" style="object-position: 50% 32%">
                         </a>
@@ -107,6 +110,7 @@
                         <button class="carousel-dot" type="button" aria-label="Ir para a foto 2" data-carousel-dot></button>
                         <button class="carousel-dot" type="button" aria-label="Ir para a foto 3" data-carousel-dot></button>
                         <button class="carousel-dot" type="button" aria-label="Ir para a foto 4" data-carousel-dot></button>
+                        <button class="carousel-dot" type="button" aria-label="Ir para a foto 5" data-carousel-dot></button>
                     </div>
                 </div>
             </section>
@@ -119,6 +123,12 @@
                     <h2 id="cat-title">Escolha por categoria</h2>
                 </div>
                 <ul class="cat-grid">
+                    <li>
+                        <a class="cat-card card" href="loja.html?categoria=pokemon">
+                            <img src="produtos/fgp-015-2-pikachu.webp" alt="" loading="lazy">
+                            <span class="cat-label">Pokémon<small>Ver produtos <i class="fa-solid fa-arrow-right"></i></small></span>
+                        </a>
+                    </li>
                     <li>
                         <a class="cat-card card" href="loja.html?categoria=geek-premium">
                             <img src="produtos/blastoise.webp" alt="" loading="lazy" style="object-position: 50% 32%">
@@ -168,6 +178,25 @@
                 </div>
                 <div class="secao-cta">
                     <a class="btn primary" href="loja.html"><i class="fa-solid fa-store"></i> Ver todos os produtos</a>
+                </div>
+            </section>
+        </div>
+
+        <div class="secao revelar" data-reveal data-theme-section>
+            <section class="conteudo" aria-labelledby="pokemon-title">
+                <div class="secao-titulo">
+                    <span class="eyebrow">Coleção</span>
+                    <h2 id="pokemon-title">Pokémon</h2>
+                </div>
+                <div class="product-grid home-featured-grid" data-theme-products="Pokémon" aria-live="polite">
+                    <article class="shop-card product-loading">
+                        <div class="product-symbol"><i class="fa-solid fa-spinner"></i></div>
+                        <h2>Carregando Pokémon</h2>
+                        <p>Buscando os produtos do tema Pokémon.</p>
+                    </article>
+                </div>
+                <div class="secao-cta">
+                    <a class="btn primary" href="loja.html?categoria=pokemon"><i class="fa-solid fa-store"></i> Ver todos os Pokémon</a>
                 </div>
             </section>
         </div>

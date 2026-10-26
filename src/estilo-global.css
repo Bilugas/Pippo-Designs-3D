@@ -883,6 +883,13 @@ textarea.is-valid {
     color: #232a4d;
 }
 
+.selo--encomenda {
+    background: var(--pippo-lilas);
+    color: #33294d;
+    font-weight: 800;
+    box-shadow: none;
+}
+
 .faixa-cta {
     padding: 38px 0;
     background: linear-gradient(115deg, var(--pippo-lilas) 0%, var(--pippo-rosa) 38%, var(--pippo-pessego) 70%, var(--pippo-amarelo) 100%);
