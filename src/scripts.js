@@ -719,11 +719,33 @@ function setupHeroCarousel() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let index = 0;
     let timer = null;
+    let videoSyncTimer = null;
+    let videoWait = 0;
 
     function updateDots() {
         dots.forEach((dot, dotIndex) => {
             dot.classList.toggle("active", dotIndex === index);
             dot.setAttribute("aria-current", dotIndex === index ? "true" : "false");
+        });
+    }
+
+    // Vídeo toca só no slide que está de fato visível e recomeça do início ao voltar para ele.
+    function syncVideos() {
+        const visible = Math.round(track.scrollLeft / track.clientWidth);
+
+        slides.forEach((slide, slideIndex) => {
+            const video = slide.querySelector("video");
+
+            if (!video) {
+                return;
+            }
+
+            if (slideIndex !== visible) {
+                video.pause();
+            } else if (video.paused) {
+                video.currentTime = 0;
+                video.play().catch(() => {});
+            }
         });
     }
 
@@ -734,7 +756,7 @@ function setupHeroCarousel() {
     }
 
     function stop() {
-        clearInterval(timer);
+        clearTimeout(timer);
         timer = null;
     }
 
@@ -743,7 +765,28 @@ function setupHeroCarousel() {
             return;
         }
 
-        timer = setInterval(() => goTo(index + 1), 4000);
+        // Slide com vídeo espera o vídeo carregar (até 10 s) e depois uma volta completa dele.
+        const video = slides[index].querySelector("video");
+        const loading = video && (video.readyState < 3 || !Number.isFinite(video.duration));
+
+        if (loading && videoWait < 10000) {
+            videoWait += 500;
+            timer = setTimeout(() => {
+                timer = null;
+                start();
+            }, 500);
+            return;
+        }
+
+        videoWait = 0;
+        const remaining = video && !loading ? video.duration - (video.paused ? 0 : video.currentTime) : 0;
+        const delay = video && !loading ? Math.max(1000, remaining * 1000) : 4000;
+
+        timer = setTimeout(() => {
+            timer = null;
+            goTo(index + 1);
+            start();
+        }, delay);
     }
 
     track.addEventListener("scroll", () => {
@@ -753,6 +796,9 @@ function setupHeroCarousel() {
             index = current;
             updateDots();
         }
+
+        clearTimeout(videoSyncTimer);
+        videoSyncTimer = setTimeout(syncVideos, 250);
     }, { passive: true });
 
     carousel.querySelector("[data-carousel-prev]").addEventListener("click", () => {
